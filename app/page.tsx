@@ -103,6 +103,20 @@ export default function HomePage() {
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
           </Link>
+          
+          <Link
+            href="/examples/financial-data"
+            className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Masked & Formatted Inputs ✅
+            </h2>
+            <p className="text-gray-600">
+              Masked input fields (IBAN, postcode, phone), currency formatting, radio/toggle fields.
+              Demonstrates automatic input formatting and validation.
+            </p>
+            <p className="text-sm text-blue-600 mt-4">View Example →</p>
+          </Link>
         </div>
       </div>
     </div>

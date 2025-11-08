@@ -1,0 +1,191 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "meta": {
+    "id": "financial-data-form",
+    "version": "1.0.0",
+    "title": "Financial Data Form",
+    "mode": "create",
+    "description": "Demo form showcasing masked and formatted input fields",
+    "layout": "standard"
+  },
+  "title": "Financial Data Form",
+  "description": "Demo form showcasing masked and formatted input fields",
+  "type": "object",
+  "properties": {
+    "personalInfo": {
+      "title": "Personal Information",
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "title": "Full Name",
+          "type": "string",
+          "description": "Your legal full name"
+        },
+        "phoneNumber": {
+          "title": "Phone Number",
+          "type": "string",
+          "description": "International format with country code",
+          "ui": {
+            "widget": "masked",
+            "mask": "phoneE164",
+            "placeholder": "+44 20 1234 5678",
+            "help": "Format: +[country code] [area] [number]"
+          }
+        }
+      },
+      "required": ["fullName", "phoneNumber"]
+    },
+    "bankingDetails": {
+      "title": "Banking Details",
+      "type": "object",
+      "properties": {
+        "iban": {
+          "title": "IBAN",
+          "type": "string",
+          "description": "International Bank Account Number",
+          "ui": {
+            "widget": "masked",
+            "mask": "iban",
+            "placeholder": "GB82 WEST 1234 5698 7654 32",
+            "help": "Enter your IBAN without spaces (will be formatted automatically)"
+          }
+        },
+        "sortCode": {
+          "title": "Sort Code",
+          "type": "string",
+          "description": "UK bank sort code",
+          "ui": {
+            "widget": "masked",
+            "mask": "ukSortCode",
+            "placeholder": "12-34-56",
+            "help": "6-digit sort code"
+          }
+        },
+        "accountType": {
+          "title": "Account Type",
+          "type": "string",
+          "enum": ["current", "savings", "business"],
+          "ui": {
+            "widget": "radio"
+          }
+        }
+      },
+      "required": ["iban", "sortCode", "accountType"]
+    },
+    "addressInfo": {
+      "title": "Address Information",
+      "type": "object",
+      "properties": {
+        "postcode": {
+          "title": "Postcode",
+          "type": "string",
+          "description": "UK postcode",
+          "ui": {
+            "widget": "masked",
+            "mask": "ukPostcode",
+            "placeholder": "SW1A 1AA",
+            "help": "Enter postcode in UK format"
+          }
+        },
+        "addressLine1": {
+          "title": "Address Line 1",
+          "type": "string"
+        },
+        "city": {
+          "title": "City",
+          "type": "string"
+        }
+      },
+      "required": ["postcode", "addressLine1", "city"]
+    },
+    "financialInfo": {
+      "title": "Financial Information",
+      "type": "object",
+      "properties": {
+        "salary": {
+          "title": "Annual Salary",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000,
+          "description": "Your gross annual salary",
+          "ui": {
+            "widget": "currency",
+            "currency": "GBP",
+            "decimalScale": 2,
+            "placeholder": "50000.00",
+            "help": "Enter your annual salary in GBP"
+          }
+        },
+        "monthlyExpenses": {
+          "title": "Monthly Expenses",
+          "type": "number",
+          "minimum": 0,
+          "description": "Average monthly expenses",
+          "ui": {
+            "widget": "currency",
+            "currency": "GBP",
+            "decimalScale": 2,
+            "placeholder": "1500.00"
+          }
+        },
+        "hasOtherIncome": {
+          "title": "Do you have other sources of income?",
+          "type": "boolean",
+          "ui": {
+            "widget": "toggle"
+          }
+        }
+      },
+      "required": ["salary", "monthlyExpenses"]
+    },
+    "scheduleInfo": {
+      "title": "Schedule Information",
+      "type": "object",
+      "properties": {
+        "preferredContactTime": {
+          "title": "Preferred Contact Time",
+          "type": "string",
+          "description": "Best time to contact you",
+          "ui": {
+            "widget": "time",
+            "placeholder": "14:30",
+            "help": "24-hour format"
+          }
+        },
+        "appointmentDateTime": {
+          "title": "Appointment Date & Time",
+          "type": "string",
+          "description": "Schedule an appointment",
+          "ui": {
+            "widget": "datetime",
+            "help": "Select your preferred date and time"
+          }
+        }
+      }
+    },
+    "preferences": {
+      "title": "Preferences",
+      "type": "object",
+      "properties": {
+        "communicationMethod": {
+          "title": "Preferred Communication Method",
+          "type": "string",
+          "enum": ["email", "phone", "sms", "post"],
+          "ui": {
+            "widget": "radio",
+            "help": "How would you like us to contact you?"
+          }
+        },
+        "marketingConsent": {
+          "title": "I consent to receiving marketing communications",
+          "type": "boolean",
+          "ui": {
+            "widget": "toggle"
+          }
+        }
+      },
+      "required": ["communicationMethod"]
+    }
+  },
+  "required": ["personalInfo", "bankingDetails", "addressInfo", "financialInfo"]
+}

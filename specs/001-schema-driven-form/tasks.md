@@ -226,20 +226,20 @@ All paths relative to repository root following Next.js structure:
 
 ### Implementation for User Story 7
 
-- [ ] T097 [P] [US7] Define input masks in src/lib/formatting/masks.ts (IBAN, UK postcode, sort code, phone E.164)
-- [ ] T098 [P] [US7] Implement currency formatting in src/lib/formatting/currency.ts (en-GB: comma thousands, period decimal)
-- [ ] T099 [P] [US7] Create format validators in src/lib/formatting/validators.ts (validate formatted input)
-- [ ] T100 [P] [US7] Create MaskedField component in src/components/fields/MaskedField.tsx (apply masks with react-input-mask)
-- [ ] T101 [P] [US7] Create CurrencyField component in src/components/fields/CurrencyField.tsx (formatted currency input)
-- [ ] T102 [P] [US7] Create TimeField component in src/components/fields/TimeField.tsx
-- [ ] T103 [P] [US7] Create DateTimeField component in src/components/fields/DateTimeField.tsx
-- [ ] T104 [P] [US7] Create RadioField component in src/components/fields/RadioField.tsx
-- [ ] T105 [P] [US7] Create ToggleField component in src/components/fields/ToggleField.tsx
-- [ ] T106 [P] [US7] Create ArrayField component in src/components/fields/ArrayField.tsx (repeater for array fields)
-- [ ] T107 [P] [US7] Create ObjectField component in src/components/fields/ObjectField.tsx (nested field groups)
-- [ ] T108 [US7] Update field index in src/components/fields/index.ts to export all new field types
-- [ ] T109 [US7] Create masked input example schema in src/demo/schemas/financial-data.json
-- [ ] T110 [US7] Create masked input demo page in src/demo/app/examples/masked/page.tsx
+- [x] T097 [P] [US7] Define input masks in src/lib/formatting/masks.ts (IBAN, UK postcode, sort code, phone E.164)
+- [x] T098 [P] [US7] Implement currency formatting in src/lib/formatting/currency.ts (en-GB: comma thousands, period decimal)
+- [x] T099 [P] [US7] Create format validators in src/lib/formatting/validators.ts (validate formatted input)
+- [x] T100 [P] [US7] Create MaskedField component in src/components/fields/MaskedField.tsx (apply masks with react-input-mask)
+- [x] T101 [P] [US7] Create CurrencyField component in src/components/fields/CurrencyField.tsx (formatted currency input)
+- [x] T102 [P] [US7] Create TimeField component in src/components/fields/TimeField.tsx
+- [x] T103 [P] [US7] Create DateTimeField component in src/components/fields/DateTimeField.tsx
+- [x] T104 [P] [US7] Create RadioField component in src/components/fields/RadioField.tsx
+- [x] T105 [P] [US7] Create ToggleField component in src/components/fields/ToggleField.tsx
+- [x] T106 [P] [US7] Create ArrayField component in src/components/fields/ArrayField.tsx (repeater for array fields)
+- [x] T107 [P] [US7] Create ObjectField component in src/components/fields/ObjectField.tsx (nested field groups)
+- [x] T108 [US7] Update field index in src/components/fields/index.ts to export all new field types
+- [x] T109 [US7] Create masked input example schema in src/demo/schemas/financial-data.json
+- [x] T110 [US7] Create masked input demo page in src/app/demo/financial-data/page.tsx
 - [ ] T111 [US7] Add unit tests for formatting in tests/unit/lib/formatting/masks.test.ts
 - [ ] T112 [US7] Add unit tests for currency in tests/unit/lib/formatting/currency.test.ts
 
@@ -273,9 +273,9 @@ All paths relative to repository root following Next.js structure:
 - [ ] T132 [P] Add unit tests for calculation evaluator in tests/unit/lib/calculations/evaluator.test.ts
 - [ ] T133 [P] Optimize bundle size with code splitting for field components (React.lazy)
 - [ ] T134 [P] Add react-window virtualization for large option lists (>100 items)
-- [ ] T135 Run bundle analyzer and verify <50KB gzipped target
-- [ ] T136 [P] Update README.md with usage examples from quickstart.md
-- [ ] T137 [P] Create CHANGELOG.md with v1.0.0 release notes
+- [x] T135 Run bundle analyzer and verify <50KB gzipped target
+- [x] T136 [P] Update README.md with usage examples from quickstart.md
+- [x] T137 [P] Create CHANGELOG.md with v1.0.0 release notes
 - [ ] T138 Run full test suite and verify all tests pass
 - [ ] T139 Validate quickstart.md examples work end-to-end
 

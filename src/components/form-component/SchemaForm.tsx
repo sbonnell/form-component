@@ -20,6 +20,14 @@ import {
   CheckboxField,
   CalculatedField,
   FileUploadField,
+  MaskedField,
+  CurrencyField,
+  TimeField,
+  DateTimeField,
+  RadioField,
+  ToggleField,
+  ArrayField,
+  ObjectField,
 } from '@/components/fields';
 import { useFormState } from './hooks/useFormState';
 import { useValidation } from './hooks/useValidation';
@@ -203,14 +211,25 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
         return <TextareaField key={path} {...commonProps} />;
       case 'number':
       case 'integer':
-      case 'currency':
         return <NumberField key={path} {...commonProps} />;
+      case 'currency':
+        return <CurrencyField key={path} {...commonProps} />;
       case 'date':
         return <DateField key={path} {...commonProps} />;
+      case 'time':
+        return <TimeField key={path} {...commonProps} />;
+      case 'datetime':
+        return <DateTimeField key={path} {...commonProps} />;
       case 'select':
         return <SelectField key={path} {...commonProps} />;
       case 'checkbox':
         return <CheckboxField key={path} {...commonProps} />;
+      case 'radio':
+        return <RadioField key={path} {...commonProps} />;
+      case 'toggle':
+        return <ToggleField key={path} {...commonProps} />;
+      case 'masked':
+        return <MaskedField key={path} {...commonProps} maskType={field.ui?.mask as any} />;
       case 'calculated':
         return <CalculatedField key={path} {...commonProps} />;
       case 'file':
@@ -227,8 +246,19 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
             onUpload={callbacks.onUpload}
           />
         );
+      case 'array':
+        return <ArrayField key={path} {...commonProps} />;
+      case 'object':
+        return <ObjectField key={path} {...commonProps} />;
       case 'text':
       default:
+        // Handle object and array types that don't have explicit widget
+        if (field.type === 'object') {
+          return <ObjectField key={path} {...commonProps} />;
+        }
+        if (field.type === 'array') {
+          return <ArrayField key={path} {...commonProps} />;
+        }
         return <TextField key={path} {...commonProps} />;
     }
   };
