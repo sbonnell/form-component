@@ -206,8 +206,10 @@ A finance user enters formatted data like UK postcodes, IBANs, and currency amou
 - **FR-044**: System MUST support groups/fieldsets with optional titles and descriptions
 - **FR-045**: System MUST support tabs layout for logical field partitioning
 - **FR-046**: System MUST support wizard/stepper layout with sequential steps and per-step validation gates
-- **FR-047**: Wizard layout MUST validate current step before allowing navigation to next step
+- **FR-047**: Wizard layout MUST validate current step before allowing navigation to next step (unless step has `allowIncomplete: true`)
+- **FR-047a**: Wizard steps with `allowIncomplete: true` MUST allow navigation even when validation fails, enabling users to fill out other steps
 - **FR-048**: Wizard layout MUST validate all steps before final submission on last step
+- **FR-048a**: Wizard Complete button MUST be disabled until all steps are valid, regardless of `allowIncomplete` settings
 
 #### Accessibility
 - **FR-049**: System MUST provide keyboard-friendly navigation for all interactive elements

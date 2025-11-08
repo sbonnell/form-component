@@ -362,6 +362,13 @@ export interface WizardStep {
   
   /** Field keys in this step */
   fields: string[];
+  
+  /** 
+   * Allow navigation away from this step even if invalid
+   * If false (default), validation must pass before proceeding
+   * If true, user can navigate to other steps with incomplete data
+   */
+  allowIncomplete?: boolean;
 }
 
 export interface JSONSchemaConditional {

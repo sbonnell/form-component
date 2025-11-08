@@ -89,6 +89,20 @@ export default function HomePage() {
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
           </Link>
+          
+          <Link
+            href="/examples/wizard"
+            className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Wizard Layout ✅
+            </h2>
+            <p className="text-gray-600">
+              Multi-step wizard with progress tracking, per-step validation, and error indicators.
+              Demonstrates wizard layout for complex multi-page forms.
+            </p>
+            <p className="text-sm text-blue-600 mt-4">View Example →</p>
+          </Link>
         </div>
       </div>
     </div>

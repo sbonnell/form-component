@@ -199,17 +199,19 @@ All paths relative to repository root following Next.js structure:
 
 ### Implementation for User Story 6
 
-- [ ] T085 [P] [US6] Create GridLayout component in src/components/layout/GridLayout.tsx (12-column responsive grid)
-- [ ] T086 [P] [US6] Create FieldGroup component in src/components/layout/FieldGroup.tsx (fieldset with title)
-- [ ] T087 [P] [US6] Create TabLayout component in src/components/layout/TabLayout.tsx (tab navigation with validation indicators)
-- [ ] T088 [P] [US6] Create WizardLayout component in src/components/layout/WizardLayout.tsx (step-by-step with validation gates)
+- [x] T085 [P] [US6] Create GridLayout component in src/components/layout/GridLayout.tsx (12-column responsive grid)
+- [x] T086 [P] [US6] Create FieldGroup component in src/components/layout/FieldGroup.tsx (fieldset with title)
+- [x] T087 [P] [US6] Create TabLayout component in src/components/layout/TabLayout.tsx (tab navigation with validation indicators)
+- [x] T088 [P] [US6] Create WizardLayout component in src/components/layout/WizardLayout.tsx (step-by-step with validation gates)
+  - **Enhanced**: Added `allowIncomplete` flag to steps - allows navigation with incomplete data while requiring all steps valid before submit
 - [ ] T089 [US6] Integrate layout components in SchemaForm.tsx (render based on layout config)
-- [ ] T090 [US6] Implement per-tab validation in TabLayout.tsx (show error indicators on tab headers)
-- [ ] T091 [US6] Implement per-step validation in WizardLayout.tsx (validate before advancing to next step)
+- [x] T090 [US6] Implement per-tab validation in TabLayout.tsx (show error indicators on tab headers)
+- [x] T091 [US6] Implement per-step validation in WizardLayout.tsx (validate before advancing to next step)
+  - **Enhanced**: Per-step validation can be skipped with `allowIncomplete: true`, but Complete button requires all steps valid
 - [ ] T092 [US6] Create grid layout example schema in src/demo/schemas/complex-form-grid.json
 - [ ] T093 [US6] Create tabs layout example schema in src/demo/schemas/complex-form-tabs.json
-- [ ] T094 [US6] Create wizard layout example schema in src/demo/schemas/complex-form-wizard.json
-- [ ] T095 [US6] Create wizard demo page in src/demo/app/examples/wizard/page.tsx
+- [x] T094 [US6] Create wizard layout example schema in src/demo/schemas/employee-onboarding-wizard.json
+- [x] T095 [US6] Create wizard demo page in app/examples/wizard/page.tsx
 - [ ] T096 [US6] Add integration test for layouts in tests/integration/layouts.test.tsx
 
 **Checkpoint**: User Stories 1-6 work independently. Forms support complex multi-section layouts for large forms.
