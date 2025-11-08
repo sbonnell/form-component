@@ -43,11 +43,28 @@ export default function CheckboxField({ name, field, required, disabled }: Check
     12: 'col-span-1 sm:col-span-2 lg:col-span-12',
   };
   
+  const offsetClasses = {
+    1: 'sm:col-start-2',
+    2: 'sm:col-start-3',
+    3: 'sm:col-start-4',
+    4: 'sm:col-start-5',
+    5: 'sm:col-start-6',
+    6: 'sm:col-start-7',
+    7: 'sm:col-start-8',
+    8: 'sm:col-start-9',
+    9: 'sm:col-start-10',
+    10: 'sm:col-start-11',
+    11: 'sm:col-start-12',
+  };
+
   const width = field.ui?.width || 12;
+  const offset = field.ui?.offset;
   const widthClass = widthClasses[width as keyof typeof widthClasses] || widthClasses[12];
+  const offsetClass = offset ? offsetClasses[offset as keyof typeof offsetClasses] : '';
+  const combinedClasses = `${widthClass} ${offsetClass}`.trim();
 
   return (
-    <div className={`${widthClass} flex items-start space-x-3 p-4 rounded-lg border ${error ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'} transition-all duration-150`}>
+    <div className={`${combinedClasses} flex items-start space-x-3 p-4 rounded-lg border ${error ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'} transition-all duration-150`}>
       <div className="flex items-center h-6 mt-0.5">
         <input
           {...register(name)}

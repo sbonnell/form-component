@@ -120,6 +120,7 @@ export default function CurrencyField({ name, field, required, disabled }: Curre
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div className="relative">
         {/* Currency symbol prefix (when not focused) */}

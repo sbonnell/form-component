@@ -42,6 +42,7 @@ export default function TimeField({ name, field, required, disabled, withSeconds
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div className="relative">
         <input

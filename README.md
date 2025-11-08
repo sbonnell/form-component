@@ -120,6 +120,49 @@ export default function ContactPage() {
 
 ### Advanced Features
 
+#### Field Layout & Positioning
+
+Control field width and positioning using the 12-column grid system:
+
+```json
+{
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First Name",
+      "ui": {
+        "width": 6  // Half width (6/12 columns)
+      }
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last Name",
+      "ui": {
+        "width": 6  // Half width - appears side-by-side
+      }
+    },
+    "totalAmount": {
+      "type": "number",
+      "title": "Total",
+      "ui": {
+        "width": 6,
+        "offset": 6  // Skip 6 columns, align to the right
+      }
+    }
+  }
+}
+```
+
+**Layout Properties:**
+- `width`: Column span (1-12) - controls field width
+- `offset`: Column offset (1-11) - number of columns to skip before field starts
+
+**Common Patterns:**
+- Side-by-side fields: Two fields with `width: 6`
+- Three-column layout: Three fields with `width: 4`
+- Right-aligned field: `width: 6, offset: 6`
+- Centered field: `width: 6, offset: 3`
+
 #### Conditional Fields
 
 ```json

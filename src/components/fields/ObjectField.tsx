@@ -73,6 +73,7 @@ export default function ObjectField({
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div className="border border-gray-300 rounded-lg overflow-hidden">
         {/* Collapsible header */}

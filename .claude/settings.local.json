@@ -16,7 +16,10 @@
       "Bash(taskkill:*)",
       "Bash(pkill:*)",
       "Bash(npm run dev:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(xcopy:*)",
+      "Bash(Copy-Item -Path src/demo -Destination app/demo -Recurse -Force)",
+      "Bash(Write-Host \"Demo directory copied successfully\")"
     ],
     "deny": [],
     "ask": []

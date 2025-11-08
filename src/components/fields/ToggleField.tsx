@@ -45,6 +45,7 @@ export default function ToggleField({ name, field, required, disabled }: ToggleF
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <button
         type="button"

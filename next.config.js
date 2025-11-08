@@ -6,6 +6,6 @@ module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   // appDir is now stable in Next.js 16 - no longer experimental
   turbopack: {}, // Explicitly enable Turbopack (default in Next.js 16)
-  // Demo app is located in ./app directory
+  // App directory contains pages and demo folder
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
 })

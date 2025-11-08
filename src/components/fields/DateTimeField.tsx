@@ -39,6 +39,7 @@ export default function DateTimeField({ name, field, required, disabled }: DateT
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div className="relative">
         <input

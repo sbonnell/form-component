@@ -75,6 +75,7 @@ export default function ArrayField({ name, field, required, disabled }: ArrayFie
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div className="space-y-3">
         {fields.length === 0 && (

@@ -7,7 +7,7 @@
 
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { SchemaForm, TabForm, WizardForm } from '@/components/form-component';
 import { queryClient } from '@/lib/options/cache';
@@ -15,6 +15,7 @@ import { mockOnSubmit } from '@/demo/mocks/onSubmit';
 import { mockOnOptions } from '@/demo/mocks/onOptions';
 import type { FormSchema } from '@/types/schema';
 import type { CallbackContext } from '@/types/callbacks';
+import SchemaEditor from './SchemaEditor';
 
 // Import all schemas
 import clientOnboardingSchema from '@/demo/schemas/client-onboarding.json';
@@ -37,49 +38,49 @@ const SCHEMA_OPTIONS: SchemaOption[] = [
   {
     id: 'client-onboarding',
     name: 'Client Onboarding',
-    schema: clientOnboardingSchema as FormSchema,
+    schema: clientOnboardingSchema as unknown as FormSchema,
     description: 'Basic client registration form',
   },
   {
     id: 'client-edit',
     name: 'Client Edit',
-    schema: clientEditSchema as FormSchema,
+    schema: clientEditSchema as unknown as FormSchema,
     description: 'Edit mode with data loading',
   },
   {
     id: 'trade-entry',
     name: 'Trade Entry',
-    schema: tradeEntrySchema as FormSchema,
+    schema: tradeEntrySchema as unknown as FormSchema,
     description: 'Dynamic options with dependencies',
   },
   {
     id: 'order-form',
     name: 'Order Form',
-    schema: orderFormSchema as FormSchema,
+    schema: orderFormSchema as unknown as FormSchema,
     description: 'Conditional logic and calculations',
   },
   {
     id: 'document-upload',
     name: 'Document Upload',
-    schema: documentUploadSchema as FormSchema,
+    schema: documentUploadSchema as unknown as FormSchema,
     description: 'File upload with validation',
   },
   {
     id: 'employee-wizard',
     name: 'Employee Wizard',
-    schema: employeeWizardSchema as FormSchema,
+    schema: employeeWizardSchema as unknown as FormSchema,
     description: 'Multi-step wizard form',
   },
   {
     id: 'employee-tabs',
     name: 'Employee Tabs',
-    schema: employeeTabsSchema as FormSchema,
+    schema: employeeTabsSchema as unknown as FormSchema,
     description: 'Tabbed form layout',
   },
   {
     id: 'financial-data',
     name: 'Financial Data',
-    schema: financialDataSchema as FormSchema,
+    schema: financialDataSchema as unknown as FormSchema,
     description: 'Masked inputs and formatting',
   },
 ];
@@ -91,6 +92,8 @@ export default function FormBuilderPage() {
   const [parseError, setParseError] = useState<string | null>(null);
   const [leftPanelWidth, setLeftPanelWidth] = useState<number>(50);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [formWidthPx, setFormWidthPx] = useState<number>(0);
+  const [highlightedField, setHighlightedField] = useState<string | null>(null);
 
   // Get selected schema option
   const selectedOption = SCHEMA_OPTIONS.find(opt => opt.id === selectedSchemaId);
@@ -145,6 +148,60 @@ export default function FormBuilderPage() {
       };
     }
   }, [isDragging]);
+
+  // Update form width in pixels whenever leftPanelWidth changes
+  React.useEffect(() => {
+    const container = document.getElementById('builder-container');
+    if (container) {
+      const width = container.getBoundingClientRect().width;
+      setFormWidthPx(Math.round(width * (leftPanelWidth / 100)));
+    }
+  }, [leftPanelWidth]);
+
+  // Track field focus/click to highlight in editor
+  useEffect(() => {
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+
+      // Find the field name from the element's id or name attribute
+      const fieldId = target.id || target.getAttribute('name');
+
+      if (fieldId) {
+        setHighlightedField(fieldId);
+      }
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      // Check if clicking on a label
+      const label = target.closest('label');
+      if (label) {
+        const htmlFor = label.getAttribute('for');
+        if (htmlFor) {
+          setHighlightedField(htmlFor);
+          return;
+        }
+      }
+
+      // Check if clicking on a field wrapper or input
+      const input = target.closest('input, textarea, select, button[role="switch"]');
+      if (input) {
+        const fieldId = input.id || input.getAttribute('name');
+        if (fieldId) {
+          setHighlightedField(fieldId);
+        }
+      }
+    };
+
+    document.addEventListener('focusin', handleFocusIn);
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('focusin', handleFocusIn);
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
 
   // Create callback context
   const context = useMemo<CallbackContext>(() => ({
@@ -307,8 +364,13 @@ export default function FormBuilderPage() {
                   </span>
                 )}
                 <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-blue-900 text-blue-200 border border-blue-700">
-                  📐 Form Width: {Math.round(leftPanelWidth)}% ({Math.round((document.getElementById('builder-container')?.getBoundingClientRect().width || 0) * (leftPanelWidth / 100))}px)
+                  📐 Form Width: {Math.round(leftPanelWidth)}% ({formWidthPx}px)
                 </span>
+                {highlightedField && (
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-purple-900 text-purple-200 border border-purple-700">
+                    🎯 Selected: {highlightedField}
+                  </span>
+                )}
               </div>
 
               <div className="flex items-center gap-2">
@@ -355,18 +417,12 @@ export default function FormBuilderPage() {
             )}
 
             {/* Code Editor */}
-            <div className="flex-1 overflow-auto">
-              <textarea
-                value={schemaText}
-                onChange={(e) => setSchemaText(e.target.value)}
-                className="w-full h-full px-6 py-4 bg-gray-900 text-gray-100 font-mono text-sm leading-relaxed focus:outline-none resize-none"
-                style={{
-                  tabSize: 2,
-                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                }}
-                spellCheck={false}
-              />
-            </div>
+            <SchemaEditor
+              value={schemaText}
+              onChange={setSchemaText}
+              highlightedField={highlightedField}
+              className="flex-1 bg-gray-900"
+            />
 
             {/* Editor Footer */}
             <div className="bg-gray-800 border-t border-gray-700 px-6 py-2">

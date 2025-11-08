@@ -143,6 +143,7 @@ export default function SelectField({ name, field, required, disabled }: SelectF
         description={field.description}
         error={error}
         width={field.ui?.width}
+        offset={field.ui?.offset}
       >
         <select
           {...register(name)}
@@ -178,6 +179,7 @@ export default function SelectField({ name, field, required, disabled }: SelectF
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div ref={dropdownRef} className="relative">
         {/* Hidden input for form state */}

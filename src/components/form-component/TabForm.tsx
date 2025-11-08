@@ -259,8 +259,8 @@ function renderTabFields(
   readOnlyFields: Set<string>
 ): React.ReactNode {
   // Group fields into rows based on width
-  const rows: Array<{ fields: Array<{ element: React.ReactNode; width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 }> }> = [];
-  let currentRow: Array<{ element: React.ReactNode; width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 }> = [];
+  const rows: Array<{ fields: Array<{ element: React.ReactNode; width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12; offset?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 }> }> = [];
+  let currentRow: Array<{ element: React.ReactNode; width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12; offset?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 }> = [];
   let currentRowWidth = 0;
 
   fieldKeys.forEach((fieldKey) => {
@@ -268,12 +268,14 @@ function renderTabFields(
     if (!field) return;
 
     const fieldWidth = (field.ui?.width || 12) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+    const fieldOffset = field.ui?.offset as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | undefined;
     const isReadOnly = readOnlyFields.has(fieldKey);
     const isRequired = requiredFields.has(fieldKey);
 
     const fieldElement = renderField(fieldKey, field, isRequired, isReadOnly);
 
     // If adding this field exceeds 12 columns, start new row
+    // Note: offset doesn't count toward row width, it just shifts position
     if (currentRowWidth + fieldWidth > 12) {
       rows.push({ fields: currentRow });
       currentRow = [];
@@ -283,6 +285,7 @@ function renderTabFields(
     currentRow.push({
       element: fieldElement,
       width: fieldWidth,
+      offset: fieldOffset,
     });
     currentRowWidth += fieldWidth;
   });

@@ -143,7 +143,10 @@ export interface FieldUIConfiguration {
   
   /** Grid column span (1-12) */
   width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-  
+
+  /** Column offset - number of columns to skip before field (1-11) */
+  offset?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+
   /** Display order within section */
   order?: number;
   

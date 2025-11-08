@@ -80,6 +80,7 @@ export function CalculatedField({
       required={required}
       description={field.description}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div className="mt-2 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 font-medium">
         {displayValue}

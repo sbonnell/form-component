@@ -162,6 +162,7 @@ export default function MultiSelectField({ name, field, required, disabled }: Mu
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <div ref={dropdownRef} className="relative">
         {/* Trigger button with selected badges */}

@@ -38,6 +38,7 @@ export default function DateField({ name, field, required, disabled }: DateField
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <input
         {...register(name)}

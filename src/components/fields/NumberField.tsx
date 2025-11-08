@@ -39,6 +39,7 @@ export default function NumberField({ name, field, required, disabled }: NumberF
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <input
         {...register(name, {

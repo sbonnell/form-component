@@ -39,6 +39,7 @@ export default function TextField({ name, field, required, disabled }: TextField
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <input
         {...register(name)}

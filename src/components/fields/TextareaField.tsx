@@ -39,6 +39,7 @@ export default function TextareaField({ name, field, required, disabled }: Texta
       description={field.description}
       error={error}
       width={field.ui?.width}
+      offset={field.ui?.offset}
     >
       <textarea
         {...register(name)}
