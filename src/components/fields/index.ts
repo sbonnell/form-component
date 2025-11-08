@@ -4,3 +4,4 @@ export { default as NumberField } from './NumberField';
 export { default as DateField } from './DateField';
 export { default as SelectField } from './SelectField';
 export { default as CheckboxField } from './CheckboxField';
+export { CalculatedField } from './CalculatedField';

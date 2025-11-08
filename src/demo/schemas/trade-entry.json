@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "id": "trade-entry",
+    "version": "1.0.0",
+    "title": "Trade Entry",
+    "mode": "create",
+    "description": "Financial trade entry form with dynamic options and field dependencies"
+  },
+  "type": "object",
+  "required": ["assetClass", "instrument", "quantity", "price", "counterparty", "tradeDate"],
+  "properties": {
+    "assetClass": {
+      "type": "string",
+      "title": "Asset Class",
+      "description": "Type of financial instrument",
+      "ui": {
+        "widget": "select",
+        "optionsSource": "assetClasses",
+        "width": 6
+      }
+    },
+    "instrument": {
+      "type": "string",
+      "title": "Instrument",
+      "description": "Specific instrument to trade (filtered by asset class)",
+      "ui": {
+        "widget": "select",
+        "optionsSource": "instruments",
+        "dependsOn": ["assetClass"],
+        "placeholder": "Select asset class first",
+        "width": 6
+      }
+    },
+    "quantity": {
+      "type": "number",
+      "title": "Quantity",
+      "description": "Number of units",
+      "minimum": 1,
+      "ui": {
+        "widget": "number",
+        "width": 4
+      }
+    },
+    "price": {
+      "type": "number",
+      "title": "Price",
+      "description": "Unit price",
+      "minimum": 0,
+      "ui": {
+        "widget": "number",
+        "decimalScale": 2,
+        "width": 4
+      }
+    },
+    "counterparty": {
+      "type": "string",
+      "title": "Counterparty",
+      "description": "Trading counterparty (searchable list)",
+      "ui": {
+        "widget": "select",
+        "optionsSource": "counterparties",
+        "width": 4
+      }
+    },
+    "tradeDate": {
+      "type": "string",
+      "title": "Trade Date",
+      "format": "date",
+      "ui": {
+        "widget": "date",
+        "width": 6
+      }
+    },
+    "settlementDate": {
+      "type": "string",
+      "title": "Settlement Date",
+      "format": "date",
+      "ui": {
+        "widget": "date",
+        "width": 6
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes",
+      "description": "Additional trade notes or instructions",
+      "ui": {
+        "widget": "textarea",
+        "width": 12
+      }
+    }
+  },
+  "dataSources": {
+    "options": [
+      { "name": "assetClasses", "type": "options" },
+      { "name": "instruments", "type": "options" },
+      { "name": "counterparties", "type": "options" }
+    ]
+  }
+}

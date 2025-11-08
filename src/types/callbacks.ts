@@ -46,10 +46,10 @@ export type OnLoadCallback = (params: {
 
 export interface OnLoadResponse {
   /** Initial field values keyed by field name */
-  initialData: Record<string, any>;
+  initialData: Record<string, unknown>;
   
   /** Optional metadata for downstream callbacks */
-  meta?: Record<string, any>;
+  meta?: Record<string, unknown>;
 }
 
 /**
@@ -66,7 +66,7 @@ export type OnOptionsCallback = (params: {
   query: string;
   
   /** Dependent field values */
-  dependsOn: Record<string, any>;
+  dependsOn: Record<string, unknown>;
   
   /** Opaque pagination token */
   pageToken?: string;
@@ -79,7 +79,7 @@ export interface OnOptionsResponse {
   /** Array of option items */
   options: Array<{
     /** Option value (stored in form) */
-    value: any;
+    value: string | number | boolean;
     
     /** Option label (displayed to user) */
     label: string;
@@ -152,7 +152,7 @@ export interface OnUploadResponse {
  */
 export type OnSubmitCallback = (params: {
   /** Complete form data (all field values) */
-  rawData: Record<string, any>;
+  rawData: Record<string, unknown>;
   
   /** Map of changed fields (true if changed from initial) */
   changedFields: Record<string, boolean>;
@@ -196,16 +196,16 @@ export interface OnSubmitFailure {
  */
 export type OnBeforeSubmitHook = (params: {
   /** Current form data */
-  rawData: Record<string, any>;
+  rawData: Record<string, unknown>;
   
   /** Callback context */
   context: CallbackContext;
 }) => Promise<{
   /** Potentially transformed form data */
-  rawData: Record<string, any>;
+  rawData: Record<string, unknown>;
 }> | {
   /** Potentially transformed form data */
-  rawData: Record<string, any>;
+  rawData: Record<string, unknown>;
 };
 
 /**

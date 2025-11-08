@@ -126,17 +126,17 @@ All paths relative to repository root following Next.js structure:
 
 ### Implementation for User Story 3
 
-- [ ] T052 [US3] Implement remote options fetcher in src/lib/options/fetcher.ts (call onOptions callback)
-- [ ] T053 [US3] Implement option cache with TanStack Query in src/lib/options/cache.ts (10-min TTL, keyed by query)
-- [ ] T054 [US3] Create option types in src/lib/options/types.ts
-- [ ] T055 [US3] Enhance SelectField with search support in src/components/fields/SelectField.tsx (debounced input)
-- [ ] T056 [US3] Add pagination support to SelectField in src/components/fields/SelectField.tsx (infinite scroll with nextPageToken)
-- [ ] T057 [US3] Implement dependsOn logic in SelectField in src/components/fields/SelectField.tsx (refresh on parent change)
+- [x] T052 [US3] Implement remote options fetcher in src/lib/options/fetcher.ts (call onOptions callback)
+- [x] T053 [US3] Implement option cache with TanStack Query in src/lib/options/cache.ts (10-min TTL, keyed by query)
+- [x] T054 [US3] Create option types in src/lib/options/types.ts
+- [x] T055 [US3] Enhance SelectField with search support in src/components/fields/SelectField.tsx (debounced input)
+- [x] T056 [US3] Add pagination support to SelectField in src/components/fields/SelectField.tsx (infinite scroll with nextPageToken)
+- [x] T057 [US3] Implement dependsOn logic in SelectField in src/components/fields/SelectField.tsx (refresh on parent change)
 - [ ] T058 [US3] Create MultiSelectField component in src/components/fields/MultiSelectField.tsx (multiple selection with search)
-- [ ] T059 [US3] Add error handling for failed option callbacks in src/lib/options/fetcher.ts (show error + retry button)
-- [ ] T060 [US3] Implement mock onOptions callback in src/demo/mocks/onOptions.ts (simulate remote API)
-- [ ] T061 [US3] Create dynamic options example schema in src/demo/schemas/trade-entry.json (with dependent selects)
-- [ ] T062 [US3] Create dynamic options demo page in src/demo/app/examples/dynamic/page.tsx
+- [x] T059 [US3] Add error handling for failed option callbacks in src/lib/options/fetcher.ts (show error + retry button)
+- [x] T060 [US3] Implement mock onOptions callback in src/demo/mocks/onOptions.ts (simulate remote API)
+- [x] T061 [US3] Create dynamic options example schema in src/demo/schemas/trade-entry.json (with dependent selects)
+- [x] T062 [US3] Create dynamic options demo page in src/demo/app/examples/dynamic/page.tsx
 - [ ] T063 [US3] Add integration test for dynamic options in tests/integration/dynamic-options.test.tsx
 
 **Checkpoint**: User Stories 1, 2, and 3 work independently. Forms support static and dynamic options with search and dependencies.

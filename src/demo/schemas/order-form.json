@@ -1,0 +1,284 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "id": "order-form",
+    "version": "1.0.0",
+    "title": "Product Order Form",
+    "mode": "create",
+    "description": "Demonstrates conditional visibility, required fields, and calculated totals"
+  },
+  "type": "object",
+  "properties": {
+    "productType": {
+      "type": "string",
+      "title": "Product Type",
+      "description": "Select the type of product",
+      "enum": ["physical", "digital", "service"],
+      "ui": {
+        "widget": "select",
+        "width": 6
+      }
+    },
+    "quantity": {
+      "type": "number",
+      "title": "Quantity",
+      "description": "Number of items",
+      "minimum": 1,
+      "default": 1,
+      "ui": {
+        "widget": "number",
+        "width": 3
+      }
+    },
+    "unitPrice": {
+      "type": "number",
+      "title": "Unit Price",
+      "description": "Price per item",
+      "minimum": 0,
+      "ui": {
+        "widget": "currency",
+        "currency": "USD",
+        "width": 3
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "title": "Subtotal",
+      "readOnly": true,
+      "ui": {
+        "widget": "calculated",
+        "width": 4
+      }
+    },
+    "shippingRequired": {
+      "type": "boolean",
+      "title": "Requires Shipping",
+      "default": false,
+      "ui": {
+        "widget": "checkbox",
+        "width": 4,
+        "hiddenWhen": {
+          "field": "productType",
+          "operator": "in",
+          "value": ["digital", "service"]
+        }
+      }
+    },
+    "shippingAddress": {
+      "type": "string",
+      "title": "Shipping Address",
+      "ui": {
+        "widget": "textarea",
+        "width": 12,
+        "hiddenWhen": {
+          "or": [
+            {
+              "field": "productType",
+              "operator": "in",
+              "value": ["digital", "service"]
+            },
+            {
+              "field": "shippingRequired",
+              "operator": "equals",
+              "value": false
+            }
+          ]
+        },
+        "requiredWhen": {
+          "and": [
+            {
+              "field": "productType",
+              "operator": "equals",
+              "value": "physical"
+            },
+            {
+              "field": "shippingRequired",
+              "operator": "equals",
+              "value": true
+            }
+          ]
+        }
+      }
+    },
+    "shippingSpeed": {
+      "type": "string",
+      "title": "Shipping Speed",
+      "enum": ["standard", "express", "overnight"],
+      "default": "standard",
+      "ui": {
+        "widget": "select",
+        "width": 6,
+        "hiddenWhen": {
+          "or": [
+            {
+              "field": "productType",
+              "operator": "in",
+              "value": ["digital", "service"]
+            },
+            {
+              "field": "shippingRequired",
+              "operator": "equals",
+              "value": false
+            }
+          ]
+        }
+      }
+    },
+    "shippingCost": {
+      "type": "number",
+      "title": "Shipping Cost",
+      "default": 0,
+      "ui": {
+        "widget": "currency",
+        "currency": "USD",
+        "width": 6,
+        "hiddenWhen": {
+          "or": [
+            {
+              "field": "productType",
+              "operator": "in",
+              "value": ["digital", "service"]
+            },
+            {
+              "field": "shippingRequired",
+              "operator": "equals",
+              "value": false
+            }
+          ]
+        }
+      }
+    },
+    "taxRate": {
+      "type": "number",
+      "title": "Tax Rate (%)",
+      "description": "Sales tax percentage",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 8.5,
+      "ui": {
+        "widget": "number",
+        "width": 4
+      }
+    },
+    "taxAmount": {
+      "type": "number",
+      "title": "Tax Amount",
+      "readOnly": true,
+      "ui": {
+        "widget": "calculated",
+        "width": 4
+      }
+    },
+    "total": {
+      "type": "number",
+      "title": "Total Amount",
+      "readOnly": true,
+      "ui": {
+        "widget": "calculated",
+        "width": 4
+      }
+    },
+    "discount": {
+      "type": "number",
+      "title": "Discount (%)",
+      "description": "Optional discount percentage",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0,
+      "ui": {
+        "widget": "number",
+        "width": 4
+      }
+    },
+    "discountAmount": {
+      "type": "number",
+      "title": "Discount Amount",
+      "readOnly": true,
+      "ui": {
+        "widget": "calculated",
+        "width": 4,
+        "hiddenWhen": {
+          "field": "discount",
+          "operator": "equals",
+          "value": 0
+        }
+      }
+    },
+    "finalTotal": {
+      "type": "number",
+      "title": "Final Total",
+      "readOnly": true,
+      "ui": {
+        "widget": "calculated",
+        "width": 4
+      }
+    },
+    "paymentMethod": {
+      "type": "string",
+      "title": "Payment Method",
+      "enum": ["credit-card", "debit-card", "paypal", "invoice"],
+      "ui": {
+        "widget": "select",
+        "width": 6
+      }
+    },
+    "invoiceEmail": {
+      "type": "string",
+      "title": "Invoice Email",
+      "format": "email",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "hiddenWhen": {
+          "field": "paymentMethod",
+          "operator": "notEquals",
+          "value": "invoice"
+        },
+        "requiredWhen": {
+          "field": "paymentMethod",
+          "operator": "equals",
+          "value": "invoice"
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Order Notes",
+      "description": "Any additional information",
+      "ui": {
+        "widget": "textarea",
+        "width": 12
+      }
+    }
+  },
+  "required": ["productType", "quantity", "unitPrice", "paymentMethod"],
+  "logic": {
+    "calculated": [
+      {
+        "target": "subtotal",
+        "dependsOn": ["quantity", "unitPrice"],
+        "formula": "quantity * unitPrice"
+      },
+      {
+        "target": "taxAmount",
+        "dependsOn": ["subtotal", "shippingCost", "taxRate"],
+        "formula": "(subtotal + shippingCost) * (taxRate / 100)"
+      },
+      {
+        "target": "total",
+        "dependsOn": ["subtotal", "shippingCost", "taxAmount"],
+        "formula": "subtotal + shippingCost + taxAmount"
+      },
+      {
+        "target": "discountAmount",
+        "dependsOn": ["total", "discount"],
+        "formula": "total * (discount / 100)"
+      },
+      {
+        "target": "finalTotal",
+        "dependsOn": ["total", "discountAmount"],
+        "formula": "total - discountAmount"
+      }
+    ]
+  }
+}

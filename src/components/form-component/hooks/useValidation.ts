@@ -2,7 +2,8 @@
  * useValidation hook
  * 
  * Handles dynamic validation based on conditional rules.
- * Adjusts required fields based on hiddenWhen/requiredWhen conditions.
+ * Returns base required fields from schema.
+ * Conditional required fields are handled by useConditionalLogic hook.
  */
 
 import { useMemo } from 'react';
@@ -20,8 +21,8 @@ export interface UseValidationOptions {
 export function useValidation(options: UseValidationOptions) {
   const { schema } = options;
   
-  // For now (US1-US3), just use static required fields from schema
-  // Dynamic conditional validation will be implemented in US4
+  // Base required fields from schema.required array
+  // Conditional requirements (requiredWhen) are handled by useConditionalLogic
   const requiredFields = useMemo(() => {
     return new Set(schema.required || []);
   }, [schema.required]);

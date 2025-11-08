@@ -18,9 +18,12 @@ import {
   DateField,
   SelectField,
   CheckboxField,
+  CalculatedField,
 } from '@/components/fields';
 import { useFormState } from './hooks/useFormState';
 import { useValidation } from './hooks/useValidation';
+import { useConditionalLogic } from './hooks/useConditionalLogic';
+import { useCalculatedFields } from './hooks/useCalculatedFields';
 import { parseSchema, getDefaultValues } from '@/lib/schema/parser';
 import { ChangeTracker } from '@/lib/utils/change-tracker';
 import type { FormSchema, FieldDefinition } from '@/types/schema';
@@ -61,6 +64,20 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
   
   // Setup validation
   const { requiredFields } = useValidation({ schema, form });
+  
+  // Setup conditional logic
+  const { hiddenFields, conditionallyRequiredFields, readOnlyFields } = useConditionalLogic({
+    properties: schema.properties,
+    control: form.control,
+    baseRequiredFields: schema.required,
+  });
+  
+  // Setup calculated fields
+  useCalculatedFields({
+    calculatedFields: schema.logic?.calculated,
+    control: form.control,
+    setValue: form.setValue,
+  });
   
   const { handleSubmit, reset, formState } = form;
   
@@ -164,9 +181,14 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
   
   // Render field based on widget type
   const renderField = (path: string, field: FieldDefinition) => {
+    // Skip hidden fields
+    if (hiddenFields.has(path)) {
+      return null;
+    }
+    
     const widget = parsedSchema.fieldMap.get(path)?.widget || 'text';
-    const required = requiredFields.has(path);
-    const disabled = isSubmitting;
+    const required = requiredFields.has(path) || conditionallyRequiredFields.has(path);
+    const disabled = isSubmitting || readOnlyFields.has(path);
     
     const commonProps = {
       name: path,
@@ -180,6 +202,7 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
         return <TextareaField key={path} {...commonProps} />;
       case 'number':
       case 'integer':
+      case 'currency':
         return <NumberField key={path} {...commonProps} />;
       case 'date':
         return <DateField key={path} {...commonProps} />;
@@ -187,6 +210,8 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
         return <SelectField key={path} {...commonProps} />;
       case 'checkbox':
         return <CheckboxField key={path} {...commonProps} />;
+      case 'calculated':
+        return <CalculatedField key={path} {...commonProps} />;
       case 'text':
       default:
         return <TextField key={path} {...commonProps} />;

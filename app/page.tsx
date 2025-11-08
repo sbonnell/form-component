@@ -48,25 +48,33 @@ export default function HomePage() {
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
           </Link>
           
-          <div className="p-6 bg-gray-100 rounded-lg shadow opacity-50">
-            <h2 className="text-xl font-semibold text-gray-500 mb-2">
-              Dynamic Options 🚧
+          <Link
+            href="/examples/dynamic"
+            className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Dynamic Options ✅
             </h2>
-            <p className="text-gray-500">
-              Selects with remote data, search, and pagination.
-              Coming in Phase 5.
+            <p className="text-gray-600">
+              Selects with remote data, search, pagination, and field dependencies.
+              Demonstrates onOptions callback and TanStack Query caching.
             </p>
-          </div>
+            <p className="text-sm text-blue-600 mt-4">View Example →</p>
+          </Link>
           
-          <div className="p-6 bg-gray-100 rounded-lg shadow opacity-50">
-            <h2 className="text-xl font-semibold text-gray-500 mb-2">
-              Conditional Logic 🚧
+          <Link
+            href="/examples/conditional"
+            className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Conditional Logic ✅
             </h2>
-            <p className="text-gray-500">
-              Dynamic field visibility and calculated fields.
-              Coming in Phase 6.
+            <p className="text-gray-600">
+              Dynamic field visibility, conditional required fields, and calculated totals.
+              Demonstrates hiddenWhen, requiredWhen, and formula evaluation.
             </p>
-          </div>
+            <p className="text-sm text-blue-600 mt-4">View Example →</p>
+          </Link>
         </div>
       </div>
     </div>

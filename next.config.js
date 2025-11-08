@@ -4,9 +4,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 module.exports = withBundleAnalyzer({
   reactStrictMode: true,
-  experimental: {
-    appDir: true,
-  },
+  // appDir is now stable in Next.js 16 - no longer experimental
+  turbopack: {}, // Explicitly enable Turbopack (default in Next.js 16)
   // Point to demo app directory
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   env: {
