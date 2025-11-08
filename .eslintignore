@@ -1,0 +1,10 @@
+# ESLint ignore patterns
+node_modules/
+dist/
+build/
+coverage/
+.next/
+out/
+*.min.js
+*.config.js
+*.config.cjs

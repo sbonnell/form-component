@@ -1,0 +1,107 @@
+/**
+ * FieldWrapper component
+ * 
+ * Common wrapper for all field components providing consistent layout,
+ * label, help text, and error message display.
+ */
+
+'use client';
+
+import React from 'react';
+
+export interface FieldWrapperProps {
+  /** Field unique identifier */
+  id: string;
+  
+  /** Field label */
+  label: string;
+  
+  /** Whether field is required */
+  required?: boolean;
+  
+  /** Help text displayed below label */
+  description?: string;
+  
+  /** Error message */
+  error?: string;
+  
+  /** Grid column span (1-12) */
+  width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  
+  /** Child input element */
+  children: React.ReactNode;
+}
+
+export default function FieldWrapper({
+  id,
+  label,
+  required,
+  description,
+  error,
+  width = 12,
+  children,
+}: FieldWrapperProps) {
+  // Map width to responsive Tailwind classes
+  const widthClasses = {
+    1: 'col-span-1',
+    2: 'col-span-1 sm:col-span-2',
+    3: 'col-span-1 sm:col-span-3',
+    4: 'col-span-1 sm:col-span-4 lg:col-span-4',
+    5: 'col-span-1 sm:col-span-5',
+    6: 'col-span-1 sm:col-span-2 lg:col-span-6',
+    7: 'col-span-1 sm:col-span-2 lg:col-span-7',
+    8: 'col-span-1 sm:col-span-2 lg:col-span-8',
+    9: 'col-span-1 sm:col-span-2 lg:col-span-9',
+    10: 'col-span-1 sm:col-span-2 lg:col-span-10',
+    11: 'col-span-1 sm:col-span-2 lg:col-span-11',
+    12: 'col-span-1 sm:col-span-2 lg:col-span-12',
+  };
+
+  const widthClass = widthClasses[width];
+
+  return (
+    <div className={`${widthClass} flex flex-col`}>
+      <label 
+        htmlFor={id} 
+        className="block text-sm font-semibold text-gray-700 mb-1.5"
+      >
+        {label}
+        {required && (
+          <span className="text-red-500 ml-1 font-normal" aria-label="required">
+            *
+          </span>
+        )}
+      </label>
+      
+      {description && (
+        <p className="text-xs text-gray-500 mb-2 leading-relaxed">
+          {description}
+        </p>
+      )}
+      
+      <div className="flex-grow">
+        {children}
+      </div>
+      
+      {error && (
+        <p 
+          className="mt-1.5 text-sm text-red-600 flex items-start" 
+          role="alert"
+        >
+          <svg 
+            className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" 
+            fill="currentColor" 
+            viewBox="0 0 20 20"
+          >
+            <path 
+              fillRule="evenodd" 
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" 
+              clipRule="evenodd" 
+            />
+          </svg>
+          <span>{error}</span>
+        </p>
+      )}
+    </div>
+  );
+}

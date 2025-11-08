@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "id": "client-edit",
+    "version": "1.0.0",
+    "title": "Edit Client Information",
+    "mode": "edit",
+    "description": "Update existing client contact details and preferences"
+  },
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First Name",
+      "minLength": 2,
+      "maxLength": 50,
+      "ui": {
+        "widget": "text",
+        "placeholder": "Enter first name",
+        "width": 6
+      }
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last Name",
+      "minLength": 2,
+      "maxLength": 50,
+      "ui": {
+        "widget": "text",
+        "placeholder": "Enter last name",
+        "width": 6
+      }
+    },
+    "email": {
+      "type": "string",
+      "title": "Email Address",
+      "format": "email",
+      "ui": {
+        "widget": "text",
+        "placeholder": "email@example.com",
+        "width": 6
+      }
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone Number",
+      "pattern": "^[0-9]{10,15}$",
+      "ui": {
+        "widget": "text",
+        "placeholder": "1234567890",
+        "width": 6
+      }
+    },
+    "dateOfBirth": {
+      "type": "string",
+      "title": "Date of Birth",
+      "format": "date",
+      "ui": {
+        "widget": "date",
+        "width": 6
+      }
+    },
+    "accountType": {
+      "type": "string",
+      "title": "Account Type",
+      "enum": ["Personal", "Business", "Corporate"],
+      "ui": {
+        "widget": "select",
+        "placeholder": "Select account type",
+        "width": 6
+      }
+    },
+    "investmentAmount": {
+      "type": "number",
+      "title": "Initial Investment Amount",
+      "minimum": 1000,
+      "maximum": 10000000,
+      "ui": {
+        "widget": "number",
+        "placeholder": "10000",
+        "width": 6
+      }
+    },
+    "termsAccepted": {
+      "type": "boolean",
+      "title": "I accept the terms and conditions",
+      "ui": {
+        "widget": "checkbox",
+        "width": 12
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Additional Notes",
+      "maxLength": 500,
+      "ui": {
+        "widget": "textarea",
+        "placeholder": "Any additional information...",
+        "width": 12
+      }
+    }
+  },
+  "required": ["firstName", "lastName", "email", "accountType", "termsAccepted"]
+}
