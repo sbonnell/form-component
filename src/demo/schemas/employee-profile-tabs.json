@@ -1,0 +1,267 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "meta": {
+    "id": "employee-profile-tabs",
+    "version": "1.0.0",
+    "title": "Employee Profile",
+    "mode": "create",
+    "description": "Multi-section employee profile form with tabbed navigation"
+  },
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First Name",
+      "minLength": 2,
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "John"
+      }
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last Name",
+      "minLength": 2,
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "Smith"
+      }
+    },
+    "email": {
+      "type": "string",
+      "title": "Email Address",
+      "format": "email",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "john.smith@company.com"
+      }
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone Number",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "+44 20 1234 5678"
+      }
+    },
+    "dateOfBirth": {
+      "type": "string",
+      "title": "Date of Birth",
+      "format": "date",
+      "ui": {
+        "widget": "date",
+        "width": 6
+      }
+    },
+    "nationality": {
+      "type": "string",
+      "title": "Nationality",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "British"
+      }
+    },
+    "department": {
+      "type": "string",
+      "title": "Department",
+      "enum": ["Engineering", "Sales", "Marketing", "HR", "Finance", "Operations"],
+      "ui": {
+        "widget": "select",
+        "width": 6
+      }
+    },
+    "jobTitle": {
+      "type": "string",
+      "title": "Job Title",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "Senior Software Engineer"
+      }
+    },
+    "employeeId": {
+      "type": "string",
+      "title": "Employee ID",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "EMP-12345"
+      }
+    },
+    "startDate": {
+      "type": "string",
+      "title": "Start Date",
+      "format": "date",
+      "ui": {
+        "widget": "date",
+        "width": 6
+      }
+    },
+    "employmentType": {
+      "type": "string",
+      "title": "Employment Type",
+      "enum": ["Full-time", "Part-time", "Contract", "Internship"],
+      "default": "Full-time",
+      "ui": {
+        "widget": "select",
+        "width": 6
+      }
+    },
+    "salary": {
+      "type": "number",
+      "title": "Annual Salary",
+      "minimum": 0,
+      "ui": {
+        "widget": "number",
+        "width": 6,
+        "placeholder": "50000"
+      }
+    },
+    "addressLine1": {
+      "type": "string",
+      "title": "Address Line 1",
+      "ui": {
+        "widget": "text",
+        "width": 12,
+        "placeholder": "123 Main Street"
+      }
+    },
+    "addressLine2": {
+      "type": "string",
+      "title": "Address Line 2",
+      "ui": {
+        "widget": "text",
+        "width": 12,
+        "placeholder": "Apartment 4B"
+      }
+    },
+    "city": {
+      "type": "string",
+      "title": "City",
+      "ui": {
+        "widget": "text",
+        "width": 4,
+        "placeholder": "London"
+      }
+    },
+    "county": {
+      "type": "string",
+      "title": "County",
+      "ui": {
+        "widget": "text",
+        "width": 4,
+        "placeholder": "Greater London"
+      }
+    },
+    "postcode": {
+      "type": "string",
+      "title": "Postcode",
+      "ui": {
+        "widget": "text",
+        "width": 4,
+        "placeholder": "SW1A 1AA"
+      }
+    },
+    "emergencyContactName": {
+      "type": "string",
+      "title": "Emergency Contact Name",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "Jane Smith"
+      }
+    },
+    "emergencyContactRelation": {
+      "type": "string",
+      "title": "Relationship",
+      "enum": ["Spouse", "Parent", "Sibling", "Child", "Friend", "Other"],
+      "ui": {
+        "widget": "select",
+        "width": 6
+      }
+    },
+    "emergencyContactPhone": {
+      "type": "string",
+      "title": "Emergency Contact Phone",
+      "ui": {
+        "widget": "text",
+        "width": 6,
+        "placeholder": "+44 20 9876 5432"
+      }
+    },
+    "skills": {
+      "type": "string",
+      "title": "Skills & Expertise",
+      "ui": {
+        "widget": "textarea",
+        "width": 12,
+        "placeholder": "List your key skills and areas of expertise..."
+      }
+    },
+    "certifications": {
+      "type": "string",
+      "title": "Certifications",
+      "ui": {
+        "widget": "textarea",
+        "width": 12,
+        "placeholder": "Professional certifications and qualifications..."
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Additional Notes",
+      "ui": {
+        "widget": "textarea",
+        "width": 12,
+        "placeholder": "Any additional information..."
+      }
+    }
+  },
+  "required": ["firstName", "lastName", "email", "department", "jobTitle", "employeeId", "startDate"],
+  "layout": {
+    "type": "tabs",
+    "tabs": [
+      {
+        "id": "personal",
+        "title": "Personal Info",
+        "icon": "👤",
+        "fields": ["firstName", "lastName", "email", "phone", "dateOfBirth", "nationality"]
+      },
+      {
+        "id": "employment",
+        "title": "Employment",
+        "icon": "💼",
+        "fields": ["department", "jobTitle", "employeeId", "startDate", "employmentType", "salary"]
+      },
+      {
+        "id": "address",
+        "title": "Address",
+        "icon": "🏠",
+        "fields": ["addressLine1", "addressLine2", "city", "county", "postcode"]
+      },
+      {
+        "id": "emergency",
+        "title": "Emergency Contact",
+        "icon": "🚨",
+        "fields": ["emergencyContactName", "emergencyContactRelation", "emergencyContactPhone"]
+      },
+      {
+        "id": "professional",
+        "title": "Professional",
+        "icon": "🎓",
+        "fields": ["skills", "certifications", "notes"]
+      }
+    ]
+  },
+  "ui": {
+    "messages": {
+      "submitText": "Save Employee Profile",
+      "resetText": "Reset Form"
+    }
+  }
+}
