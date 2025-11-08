@@ -310,10 +310,12 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
                   <div className="text-gray-600 font-medium">Loading form data...</div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-6">
-                  {Object.entries(schema.properties).map(([key, field]) =>
-                    renderField(key, field)
-                  )}
+                <div className="@container">
+                  <div className="grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-6 @xl:grid-cols-12 gap-x-6 gap-y-6">
+                    {Object.entries(schema.properties).map(([key, field]) =>
+                      renderField(key, field)
+                    )}
+                  </div>
                 </div>
               )}
             </div>

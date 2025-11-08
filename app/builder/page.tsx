@@ -7,7 +7,8 @@
 
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { SchemaForm, TabForm, WizardForm } from '@/components/form-component';
 import { queryClient } from '@/lib/options/cache';
@@ -85,9 +86,20 @@ const SCHEMA_OPTIONS: SchemaOption[] = [
   },
 ];
 
-export default function FormBuilderPage() {
-  const [selectedSchemaId, setSelectedSchemaId] = useState<string>('client-onboarding');
-  const [selectedFormComponent, setSelectedFormComponent] = useState<'schema' | 'tabs' | 'wizard'>('schema');
+function FormBuilderContent() {
+  const searchParams = useSearchParams();
+  
+  // Initialize from URL params or defaults
+  const [selectedSchemaId, setSelectedSchemaId] = useState<string>(() => {
+    return searchParams.get('schema') || 'client-onboarding';
+  });
+  const [selectedFormComponent, setSelectedFormComponent] = useState<'schema' | 'tabs' | 'wizard'>(() => {
+    const component = searchParams.get('component');
+    if (component === 'tabs' || component === 'wizard') {
+      return component;
+    }
+    return 'schema';
+  });
   const [schemaText, setSchemaText] = useState<string>('');
   const [parseError, setParseError] = useState<string | null>(null);
   const [leftPanelWidth, setLeftPanelWidth] = useState<number>(50);
@@ -105,6 +117,19 @@ export default function FormBuilderPage() {
       setParseError(null);
     }
   }, [selectedOption]);
+
+  // Update URL when selections change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set('schema', selectedSchemaId);
+    if (selectedFormComponent !== 'schema') {
+      params.set('component', selectedFormComponent);
+    }
+    
+    // Update URL without triggering navigation
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState(null, '', newUrl);
+  }, [selectedSchemaId, selectedFormComponent]);
 
   // Parse schema from text
   const parsedSchema = useMemo(() => {
@@ -323,12 +348,6 @@ export default function FormBuilderPage() {
             style={{ width: `${leftPanelWidth}%` }}
           >
             <div className="p-8">
-              <div className="mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 mb-1">Form Preview</h2>
-                <p className="text-sm text-gray-600">
-                  Live preview updates as you edit the schema
-                </p>
-              </div>
 
               {renderForm()}
             </div>
@@ -442,5 +461,20 @@ export default function FormBuilderPage() {
         </div>
       </div>
     </QueryClientProvider>
+  );
+}
+
+export default function FormBuilderPage() {
+  return (
+    <Suspense fallback={
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading builder...</p>
+        </div>
+      </div>
+    }>
+      <FormBuilderContent />
+    </Suspense>
   );
 }

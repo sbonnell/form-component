@@ -94,8 +94,8 @@ export default function TabLayout({
   return (
     <div className={`w-full ${className}`}>
       {/* Tab Headers */}
-      <div className="border-b border-gray-200 bg-white">
-        <nav className="flex space-x-8 px-6" aria-label="Tabs">
+      <div className="border-b border-gray-200 bg-white overflow-x-auto">
+        <nav className="@container flex flex-wrap @sm:flex-nowrap space-x-2 @md:space-x-4 @lg:space-x-6 px-2 @md:px-4 @lg:px-6 min-w-min" aria-label="Tabs">
           {tabs.map((tab) => {
             const isActive = tab.id === activeTab;
             const hasErrors = hasTabErrors(tab);
@@ -107,7 +107,7 @@ export default function TabLayout({
                 type="button"
                 onClick={() => handleTabClick(tab.id)}
                 className={`
-                  relative whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm
+                  relative whitespace-nowrap py-4 px-1 @md:px-2 @lg:px-3 border-b-2 font-medium text-xs @sm:text-sm
                   transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                   ${
                     isActive
@@ -119,14 +119,15 @@ export default function TabLayout({
                 role="tab"
                 aria-selected={isActive}
               >
-                <span className="flex items-center space-x-2">
-                  {tab.icon && <span>{tab.icon}</span>}
-                  <span>{tab.title}</span>
+                <span className="flex items-center space-x-1 @md:space-x-2">
+                  {tab.icon && <span className="text-xs @md:text-sm">{tab.icon}</span>}
+                  <span className="hidden @sm:inline">{tab.title}</span>
+                  <span className="@sm:hidden text-xs">{tab.title.substring(0, 3)}</span>
                   
                   {/* Error indicator */}
                   {hasErrors && (
                     <span
-                      className="inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-500 rounded-full"
+                      className="inline-flex items-center justify-center w-4 h-4 @md:w-5 @md:h-5 text-xs font-semibold text-white bg-red-500 rounded-full"
                       title={`${errorCount} error${errorCount === 1 ? '' : 's'}`}
                     >
                       {errorCount}
@@ -140,7 +141,7 @@ export default function TabLayout({
       </div>
 
       {/* Tab Content */}
-      <div className="py-6">
+      <div className="py-2 @md:py-4 @lg:py-6">
         {activeTabData && (
           <div
             key={activeTabData.id}
