@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "id": "document-upload-form",
+    "version": "1.0.0",
+    "title": "Document Upload Form",
+    "mode": "create",
+    "description": "Upload supporting documents with file type and size validation"
+  },
+  "type": "object",
+  "properties": {
+    "caseNumber": {
+      "type": "string",
+      "title": "Case Number",
+      "description": "Enter the case number for this document submission",
+      "pattern": "^CASE-[0-9]{6}$",
+      "ui": {
+        "widget": "text",
+        "placeholder": "CASE-123456",
+        "width": 6
+      }
+    },
+    "documentType": {
+      "type": "string",
+      "title": "Document Type",
+      "description": "Select the type of document being uploaded",
+      "enum": ["invoice", "contract", "report", "correspondence", "supporting-evidence"],
+      "ui": {
+        "widget": "select",
+        "placeholder": "Select document type",
+        "width": 6
+      }
+    },
+    "singlePDF": {
+      "type": "array",
+      "title": "Single PDF Document",
+      "description": "Upload one PDF file (max 5MB)",
+      "items": {
+        "type": "object"
+      },
+      "ui": {
+        "widget": "file",
+        "upload": {
+          "callback": "onUpload",
+          "maxFiles": 1,
+          "maxSizeMB": 5,
+          "accept": [".pdf", "application/pdf"]
+        },
+        "width": 12
+      }
+    },
+    "multipleImages": {
+      "type": "array",
+      "title": "Supporting Images",
+      "description": "Upload up to 3 images (JPG, PNG, max 2MB each)",
+      "items": {
+        "type": "object"
+      },
+      "ui": {
+        "widget": "file",
+        "upload": {
+          "callback": "onUpload",
+          "maxFiles": 3,
+          "maxSizeMB": 2,
+          "accept": [".jpg", ".jpeg", ".png", "image/jpeg", "image/png"]
+        },
+        "width": 12
+      }
+    },
+    "spreadsheets": {
+      "type": "array",
+      "title": "Financial Spreadsheets",
+      "description": "Upload Excel or CSV files (max 10MB each, up to 5 files)",
+      "items": {
+        "type": "object"
+      },
+      "ui": {
+        "widget": "file",
+        "upload": {
+          "callback": "onUpload",
+          "maxFiles": 5,
+          "maxSizeMB": 10,
+          "accept": [".xlsx", ".xls", ".csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel", "text/csv"]
+        },
+        "width": 12
+      }
+    },
+    "anyDocument": {
+      "type": "array",
+      "title": "Additional Documents",
+      "description": "Upload any supporting documents (no file type restrictions, max 20MB each)",
+      "items": {
+        "type": "object"
+      },
+      "ui": {
+        "widget": "file",
+        "upload": {
+          "callback": "onUpload",
+          "maxFiles": 10,
+          "maxSizeMB": 20
+        },
+        "width": 12
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Additional Notes",
+      "description": "Add any notes about the uploaded documents",
+      "ui": {
+        "widget": "textarea",
+        "placeholder": "Optional notes...",
+        "width": 12
+      }
+    }
+  },
+  "required": ["caseNumber", "documentType", "singlePDF"]
+}

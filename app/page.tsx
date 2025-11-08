@@ -75,6 +75,20 @@ export default function HomePage() {
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
           </Link>
+          
+          <Link
+            href="/examples/file-upload"
+            className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              File Upload ✅
+            </h2>
+            <p className="text-gray-600">
+              File uploads with drag-and-drop, validation (type, size, count), and progress tracking.
+              Demonstrates onUpload callback and client-side file validation.
+            </p>
+            <p className="text-sm text-blue-600 mt-4">View Example →</p>
+          </Link>
         </div>
       </div>
     </div>

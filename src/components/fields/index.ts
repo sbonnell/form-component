@@ -5,3 +5,4 @@ export { default as DateField } from './DateField';
 export { default as SelectField } from './SelectField';
 export { default as CheckboxField } from './CheckboxField';
 export { CalculatedField } from './CalculatedField';
+export { FileUploadField } from './FileUploadField';

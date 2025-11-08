@@ -151,17 +151,17 @@ All paths relative to repository root following Next.js structure:
 
 ### Implementation for User Story 4
 
-- [ ] T064 [P] [US4] Implement conditional rule evaluator in src/lib/conditional-logic/evaluator.ts (evaluate hiddenWhen/requiredWhen)
+- [x] T064 [P] [US4] Implement conditional rule evaluator in src/lib/conditional-logic/evaluator.ts (evaluate hiddenWhen/requiredWhen)
 - [ ] T065 [P] [US4] Implement expression parser for conditional rules in src/lib/conditional-logic/expression-parser.ts (operators: equals, in, gt, etc.)
-- [ ] T066 [US4] Create useConditionalLogic hook in src/components/form-component/hooks/useConditionalLogic.ts (re-evaluate on field changes)
-- [ ] T067 [US4] Integrate conditional logic in SchemaForm.tsx to show/hide fields dynamically
-- [ ] T068 [US4] Integrate conditional logic in useValidation hook to adjust required fields dynamically
-- [ ] T069 [P] [US4] Implement calculated field evaluator in src/lib/calculations/evaluator.ts (parse and evaluate formulas)
-- [ ] T070 [P] [US4] Implement dependency tracker for calculated fields in src/lib/calculations/dependency-tracker.ts
-- [ ] T071 [US4] Create useCalculatedFields hook in src/components/form-component/hooks/useCalculatedFields.ts (recompute on dependency changes)
-- [ ] T072 [US4] Create CalculatedField component in src/components/fields/CalculatedField.tsx (read-only display)
-- [ ] T073 [US4] Create conditional logic example schema in src/demo/schemas/incident-report.json (with hiddenWhen/requiredWhen)
-- [ ] T074 [US4] Create conditional logic demo page in src/demo/app/examples/conditional/page.tsx
+- [x] T066 [US4] Create useConditionalLogic hook in src/components/form-component/hooks/useConditionalLogic.ts (re-evaluate on field changes)
+- [x] T067 [US4] Integrate conditional logic in SchemaForm.tsx to show/hide fields dynamically
+- [x] T068 [US4] Integrate conditional logic in useValidation hook to adjust required fields dynamically
+- [x] T069 [P] [US4] Implement calculated field evaluator in src/lib/calculations/evaluator.ts (parse and evaluate formulas)
+- [x] T070 [P] [US4] Implement dependency tracker for calculated fields in src/lib/calculations/dependency-tracker.ts
+- [x] T071 [US4] Create useCalculatedFields hook in src/components/form-component/hooks/useCalculatedFields.ts (recompute on dependency changes)
+- [x] T072 [US4] Create CalculatedField component in src/components/fields/CalculatedField.tsx (read-only display)
+- [x] T073 [US4] Create conditional logic example schema in src/demo/schemas/incident-report.json (with hiddenWhen/requiredWhen)
+- [x] T074 [US4] Create conditional logic demo page in src/demo/app/examples/conditional/page.tsx
 - [ ] T075 [US4] Add integration test for conditional logic in tests/integration/conditional-logic.test.tsx
 
 **Checkpoint**: User Stories 1-4 work independently. Forms support dynamic field visibility, conditional validation, and calculated fields.
@@ -176,15 +176,16 @@ All paths relative to repository root following Next.js structure:
 
 ### Implementation for User Story 5
 
-- [ ] T076 [P] [US5] Create FileUploadField component in src/components/fields/FileUploadField.tsx (file input with validation)
-- [ ] T077 [US5] Implement file validation in FileUploadField.tsx (check MIME type, size, count before upload)
-- [ ] T078 [US5] Add upload progress tracking in FileUploadField.tsx (XMLHttpRequest progress events)
-- [ ] T079 [US5] Add cancel and retry functionality in FileUploadField.tsx
-- [ ] T080 [US5] Display uploaded file list with remove buttons in FileUploadField.tsx
-- [ ] T081 [US5] Implement mock onUpload callback in src/demo/mocks/onUpload.ts (simulate file upload)
-- [ ] T082 [US5] Create file upload example schema in src/demo/schemas/document-upload.json
-- [ ] T083 [US5] Create file upload demo page in src/demo/app/examples/upload/page.tsx
-- [ ] T084 [US5] Add integration test for file uploads in tests/integration/file-upload.test.tsx
+- [x] T076 [P] [US5] Create file validation utilities in src/lib/file-validation/validators.ts (MIME type, size, count validation)
+- [x] T077 [P] [US5] Create useFileUpload hook in src/components/form-component/hooks/useFileUpload.ts (upload state management)
+- [x] T078 [P] [US5] Create FileUploadField component in src/components/fields/FileUploadField.tsx (drag-drop, validation, progress)
+- [x] T079 [US5] Add file upload integration to SchemaForm.tsx (handle 'file' widget type)
+- [x] T080 [US5] Export FileUploadField from src/components/fields/index.ts
+- [x] T081 [US5] Create file upload example schema in src/demo/schemas/document-upload.json
+- [x] T082 [US5] Create file upload demo page in app/examples/file-upload/page.tsx
+- [x] T083 [US5] Add File Upload card to home page in app/page.tsx
+- [x] T084 [US5] Add File Upload link to navigation in app/layout.tsx
+- [ ] T085 [US5] Add integration test for file uploads in tests/integration/file-upload.test.tsx
 
 **Checkpoint**: User Stories 1-5 work independently. Forms support file uploads with validation and progress tracking.
 
@@ -253,8 +254,8 @@ All paths relative to repository root following Next.js structure:
 - [ ] T115 [P] Add focus management for modals and wizards
 - [ ] T116 [P] Implement unsaved changes warning dialog (beforeunload event)
 - [ ] T117 [P] Implement schema version graceful degradation in src/lib/schema/parser.ts
-- [ ] T118 Create demo home page in src/demo/app/page.tsx (navigation to all examples)
-- [ ] T119 Create demo layout in src/demo/app/layout.tsx (navigation menu)
+- [x] T118 Create demo home page in src/demo/app/page.tsx (navigation to all examples)
+- [x] T119 Create demo layout in src/demo/app/layout.tsx (navigation menu)
 - [ ] T120 [P] Add E2E test for basic form in tests/e2e/basic-form.spec.ts
 - [ ] T121 [P] Add E2E test for validation in tests/e2e/validation.spec.ts
 - [ ] T122 [P] Add E2E test for conditional fields in tests/e2e/conditional-fields.spec.ts

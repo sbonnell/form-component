@@ -19,6 +19,7 @@ import {
   SelectField,
   CheckboxField,
   CalculatedField,
+  FileUploadField,
 } from '@/components/fields';
 import { useFormState } from './hooks/useFormState';
 import { useValidation } from './hooks/useValidation';
@@ -212,6 +213,20 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
         return <CheckboxField key={path} {...commonProps} />;
       case 'calculated':
         return <CalculatedField key={path} {...commonProps} />;
+      case 'file':
+        return (
+          <FileUploadField
+            key={path}
+            name={path}
+            control={form.control}
+            label={field.title}
+            description={field.description}
+            required={required}
+            disabled={disabled}
+            rules={field.ui?.upload}
+            onUpload={callbacks.onUpload}
+          />
+        );
       case 'text':
       default:
         return <TextField key={path} {...commonProps} />;
