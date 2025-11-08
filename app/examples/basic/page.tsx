@@ -11,6 +11,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { SchemaForm } from '@/components/form-component';
 import { queryClient } from '@/lib/options/cache';
 import { mockOnSubmit } from '@/demo/mocks/onSubmit';
+import { SchemaViewer } from '@/demo/components/SchemaViewer';
 import type { FormSchema } from '@/types/schema';
 import type { CallbackContext } from '@/types/callbacks';
 import schema from '@/demo/schemas/client-onboarding.json';
@@ -35,7 +36,9 @@ export default function BasicFormPage() {
               Demonstrates basic form fields with validation and submission.
             </p>
           </div>
-          
+
+          <SchemaViewer schema={schema as FormSchema} />
+
           <SchemaForm
             schema={schema as FormSchema}
             callbacks={{

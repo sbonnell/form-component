@@ -17,6 +17,7 @@ import {
   NumberField,
   DateField,
   SelectField,
+  MultiSelectField,
   CheckboxField,
   CalculatedField,
   FileUploadField,
@@ -79,6 +80,7 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
     properties: schema.properties,
     control: form.control,
     baseRequiredFields: schema.required,
+    allFields: parsedSchema.fields,
   });
   
   // Setup calculated fields
@@ -204,6 +206,9 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
       field,
       required,
       disabled,
+      hiddenFields,
+      conditionallyRequiredFields,
+      readOnlyFields,
     };
     
     switch (widget) {
@@ -222,6 +227,8 @@ export default function SchemaForm({ schema, callbacks, context, initialData }: 
         return <DateTimeField key={path} {...commonProps} />;
       case 'select':
         return <SelectField key={path} {...commonProps} />;
+      case 'multiselect':
+        return <MultiSelectField key={path} {...commonProps} />;
       case 'checkbox':
         return <CheckboxField key={path} {...commonProps} />;
       case 'radio':

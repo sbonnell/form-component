@@ -132,12 +132,12 @@ All paths relative to repository root following Next.js structure:
 - [x] T055 [US3] Enhance SelectField with search support in src/components/fields/SelectField.tsx (debounced input)
 - [x] T056 [US3] Add pagination support to SelectField in src/components/fields/SelectField.tsx (infinite scroll with nextPageToken)
 - [x] T057 [US3] Implement dependsOn logic in SelectField in src/components/fields/SelectField.tsx (refresh on parent change)
-- [ ] T058 [US3] Create MultiSelectField component in src/components/fields/MultiSelectField.tsx (multiple selection with search)
+- [x] T058 [US3] Create MultiSelectField component in src/components/fields/MultiSelectField.tsx (multiple selection with search)
 - [x] T059 [US3] Add error handling for failed option callbacks in src/lib/options/fetcher.ts (show error + retry button)
 - [x] T060 [US3] Implement mock onOptions callback in src/demo/mocks/onOptions.ts (simulate remote API)
 - [x] T061 [US3] Create dynamic options example schema in src/demo/schemas/trade-entry.json (with dependent selects)
 - [x] T062 [US3] Create dynamic options demo page in src/demo/app/examples/dynamic/page.tsx
-- [ ] T063 [US3] Add integration test for dynamic options in tests/integration/dynamic-options.test.tsx
+- [x] T063 [US3] Add integration test for dynamic options in tests/integration/dynamic-options.test.tsx
 
 **Checkpoint**: User Stories 1, 2, and 3 work independently. Forms support static and dynamic options with search and dependencies.
 

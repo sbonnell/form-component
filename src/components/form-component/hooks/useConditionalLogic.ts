@@ -30,6 +30,9 @@ interface UseConditionalLogicParams {
   
   /** Base required fields from schema */
   baseRequiredFields?: string[];
+  
+  /** All parsed fields (including nested) */
+  allFields?: Array<{ path: string; definition: FieldDefinition }>;
 }
 
 /**
@@ -42,9 +45,16 @@ export function useConditionalLogic({
   properties,
   control,
   baseRequiredFields = [],
+  allFields,
 }: UseConditionalLogicParams): ConditionalLogicResult {
   // Watch all form values for conditional evaluation
-  const formValues = useWatch({ control }) as Record<string, unknown>;
+  const watchedValues = useWatch({ control }) as Record<string, unknown>;
+  
+  // Merge with default values to ensure all fields are considered
+  const formValues = useMemo(() => {
+    const defaultValues = control._defaultValues || {};
+    return { ...defaultValues, ...watchedValues };
+  }, [control._defaultValues, watchedValues]);
 
   // Memoize the evaluation to avoid unnecessary recalculations
   const result = useMemo(() => {
@@ -53,7 +63,9 @@ export function useConditionalLogic({
     const readOnlyFields = new Set<string>();
 
     // Evaluate each field's conditions
-    Object.entries(properties).forEach(([fieldName, fieldDef]) => {
+    const fieldsToEvaluate = allFields || Object.entries(properties).map(([key, def]) => ({ path: key, definition: def }));
+    
+    fieldsToEvaluate.forEach(({ path: fieldName, definition: fieldDef }) => {
       const ui = fieldDef.ui;
       
       if (!ui) {
@@ -83,7 +95,7 @@ export function useConditionalLogic({
       conditionallyRequiredFields,
       readOnlyFields,
     };
-  }, [properties, formValues]);
+  }, [properties, allFields, formValues]);
 
   return result;
 }

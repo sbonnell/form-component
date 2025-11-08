@@ -27,9 +27,26 @@ export interface ObjectFieldProps {
   
   /** Whether field is disabled */
   disabled?: boolean;
+  
+  /** Hidden fields set */
+  hiddenFields?: Set<string>;
+  
+  /** Conditionally required fields set */
+  conditionallyRequiredFields?: Set<string>;
+  
+  /** Read-only fields set */
+  readOnlyFields?: Set<string>;
 }
 
-export default function ObjectField({ name, field, required, disabled }: ObjectFieldProps) {
+export default function ObjectField({ 
+  name, 
+  field, 
+  required, 
+  disabled,
+  hiddenFields = new Set(),
+  conditionallyRequiredFields = new Set(),
+  readOnlyFields = new Set()
+}: ObjectFieldProps) {
   const { formState: { errors } } = useFormContext();
   const [isExpanded, setIsExpanded] = useState(true);
   
@@ -85,7 +102,14 @@ export default function ObjectField({ name, field, required, disabled }: ObjectF
           <div className="p-4 space-y-4 bg-white">
             {Object.entries(properties).map(([key, nestedField]) => {
               const fieldPath = `${name}.${key}`;
-              const isFieldRequired = requiredFields.includes(key);
+              
+              // Skip hidden nested fields
+              if (hiddenFields.has(fieldPath)) {
+                return null;
+              }
+              
+              const isFieldRequired = requiredFields.includes(key) || conditionallyRequiredFields.has(fieldPath);
+              const isFieldDisabled = disabled || readOnlyFields.has(fieldPath) || field.readOnly;
               
               return (
                 <div key={key}>
@@ -94,7 +118,7 @@ export default function ObjectField({ name, field, required, disabled }: ObjectF
                       name={fieldPath}
                       field={nestedField}
                       required={isFieldRequired}
-                      disabled={disabled || field.readOnly}
+                      disabled={isFieldDisabled}
                     />
                   )}
                   
@@ -103,7 +127,7 @@ export default function ObjectField({ name, field, required, disabled }: ObjectF
                       name={fieldPath}
                       field={nestedField}
                       required={isFieldRequired}
-                      disabled={disabled || field.readOnly}
+                      disabled={isFieldDisabled}
                     />
                   )}
                   
@@ -112,7 +136,7 @@ export default function ObjectField({ name, field, required, disabled }: ObjectF
                       name={fieldPath}
                       field={nestedField}
                       required={isFieldRequired}
-                      disabled={disabled || field.readOnly}
+                      disabled={isFieldDisabled}
                     />
                   )}
                   
@@ -121,7 +145,7 @@ export default function ObjectField({ name, field, required, disabled }: ObjectF
                       name={fieldPath}
                       field={nestedField}
                       required={isFieldRequired}
-                      disabled={disabled || field.readOnly}
+                      disabled={isFieldDisabled}
                     />
                   )}
                   
@@ -130,7 +154,10 @@ export default function ObjectField({ name, field, required, disabled }: ObjectF
                       name={fieldPath}
                       field={nestedField}
                       required={isFieldRequired}
-                      disabled={disabled || field.readOnly}
+                      disabled={isFieldDisabled}
+                      hiddenFields={hiddenFields}
+                      conditionallyRequiredFields={conditionallyRequiredFields}
+                      readOnlyFields={readOnlyFields}
                     />
                   )}
                 </div>

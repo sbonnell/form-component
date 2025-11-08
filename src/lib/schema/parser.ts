@@ -150,6 +150,9 @@ export function getDefaultValues(schema: FormSchema): Record<string, any> {
 
       if (field.default !== undefined) {
         defaults[path] = field.default;
+      } else if (field.type === 'boolean') {
+        // Boolean fields default to false if not explicitly set
+        defaults[path] = false;
       }
 
       // Recurse for nested objects

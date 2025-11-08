@@ -8,7 +8,6 @@
  * - changedFields map in submission
  */
 
-import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -85,7 +84,9 @@ describe('Edit Mode Integration Tests', () => {
     );
     
     // Verify fields are populated
-    expect(screen.getByLabelText('First Name')).toHaveValue('John');
+    await waitFor(() => {
+      expect(screen.getByLabelText('First Name')).toHaveValue('John');
+    });
     expect(screen.getByLabelText('Last Name')).toHaveValue('Doe');
     expect(screen.getByLabelText('Email')).toHaveValue('john.doe@example.com');
   });
@@ -153,8 +154,8 @@ describe('Edit Mode Integration Tests', () => {
       </QueryClientProvider>
     );
     
-    // Modify only the email field
-    const emailInput = screen.getByLabelText('Email');
+    // Wait for form to be ready and modify only the email field
+    const emailInput = await screen.findByLabelText('Email');
     await user.clear(emailInput);
     await user.type(emailInput, 'newemail@example.com');
     
@@ -202,11 +203,11 @@ describe('Edit Mode Integration Tests', () => {
       </QueryClientProvider>
     );
     
-    // Modify firstName and email
-    const firstNameInput = screen.getByLabelText('First Name');
+    // Wait for form to be ready, then modify firstName and email
+    const firstNameInput = await screen.findByLabelText('First Name');
     await user.clear(firstNameInput);
     await user.type(firstNameInput, 'Jane');
-    
+
     const emailInput = screen.getByLabelText('Email');
     await user.clear(emailInput);
     await user.type(emailInput, 'jane.doe@example.com');
