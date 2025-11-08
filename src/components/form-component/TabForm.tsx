@@ -147,12 +147,17 @@ export default function TabForm({
   // Get tab sections from schema or custom tabs
   const tabDefinitions = customTabs || schema.layout?.tabs;
 
-  if (!tabDefinitions || tabDefinitions.length === 0) {
-    throw new Error('TabForm requires schema.layout.tabs or customTabs prop');
-  }
+  // If no tabs defined, fall back to SchemaForm behavior by grouping all fields into a single tab
+  const finalTabDefinitions = tabDefinitions && tabDefinitions.length > 0
+    ? tabDefinitions
+    : [{
+        id: 'default',
+        title: schema.meta.title || 'Form',
+        fields: Object.keys(schema.properties || {}),
+      }];
 
   // Build tab sections with rendered content
-  const tabSections: TabSection[] = tabDefinitions.map((tabDef: any) => ({
+  const tabSections: TabSection[] = finalTabDefinitions.map((tabDef: any) => ({
     id: tabDef.id,
     title: tabDef.title,
     icon: tabDef.icon,

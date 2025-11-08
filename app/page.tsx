@@ -19,6 +19,19 @@ export default function HomePage() {
           </p>
         </div>
         
+        <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg">
+          <h2 className="text-lg font-bold text-blue-900 mb-2">🛠 Form Builder</h2>
+          <p className="text-blue-800 mb-4">
+            Interactive tool to test forms with live schema editing, responsive design testing with resizable panels, and form component selection.
+          </p>
+          <Link
+            href="/builder"
+            className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            Open Form Builder →
+          </Link>
+        </div>
+
         <div className="grid gap-6 md:grid-cols-2">
           <Link
             href="/examples/basic"
@@ -103,7 +116,21 @@ export default function HomePage() {
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
           </Link>
-          
+
+          <Link
+            href="/examples/tabs"
+            className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+          >
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Tabs Layout ✅
+            </h2>
+            <p className="text-gray-600">
+              Multi-section tabbed form with validation indicators and icon support.
+              Demonstrates tabbed layout for organized multi-section forms.
+            </p>
+            <p className="text-sm text-blue-600 mt-4">View Example →</p>
+          </Link>
+
           <Link
             href="/examples/financial-data"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
