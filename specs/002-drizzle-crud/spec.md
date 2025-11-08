@@ -5,11 +5,21 @@
 **Status**: Draft  
 **Input**: User description: "Utilising the existing Schema-Driven Form functionality provide functionality to automatically create schemas to perform CRUD operation on Drizzle ORM tables. For demo and testing purposes create a database with sample data for some common use case table like: user, transaction, goods. All demo and test functionality should be under /app and NOT /src"
 
+## Clarifications
+
+### Session 2025-11-08
+
+- Q: Which database should be used for the demo CRUD functionality? → A: SQLite with better-sqlite3 (file-based, zero setup, perfect for demos)
+- Q: How should search/filter work across table fields? → A: Remove search/filter requirement (not needed for initial demo)
+- Q: How should demo data persist across page reloads and server restarts? → A: SQLite file persists across restarts, with optional "Reset Demo Data" button to re-seed
+- Q: How should long text values be displayed in the list view table? → A: Truncate at 100 characters with ellipsis (...)
+- Q: How should the system handle concurrent edits (multiple users editing the same record)? → A: Last write wins (no conflict detection, simpler for demo usage)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - View List of Records (Priority: P1)
 
-A user wants to view a paginated, searchable list of records from a database table (e.g., users, transactions, goods) to understand what data exists and identify records to edit or delete.
+A user wants to view a paginated list of records from a database table (e.g., users, transactions, goods) to understand what data exists and identify records to edit or delete.
 
 **Why this priority**: This is the foundation - users must see data before they can perform any CRUD operations. This delivers immediate value by making database content visible.
 
@@ -19,8 +29,7 @@ A user wants to view a paginated, searchable list of records from a database tab
 
 1. **Given** the database contains 50 user records, **When** I navigate to the users list page, **Then** I see the first 10 records displayed in a table with columns for all user fields
 2. **Given** I am viewing the users list page, **When** I click the "Next Page" button, **Then** I see records 11-20 displayed
-3. **Given** the database contains user records, **When** I type a search term in the search box, **Then** the list filters to show only matching records
-4. **Given** the users table has fields (id, name, email, created_at), **When** I view the list, **Then** I see column headers for each field with appropriate formatting
+3. **Given** the users table has fields (id, name, email, created_at), **When** I view the list, **Then** I see column headers for each field with appropriate formatting
 
 ---
 
@@ -108,17 +117,15 @@ Developers and stakeholders can view working demo pages under `/app/demo/crud/` 
 1. **Given** I navigate to `/app/demo/crud/users`, **When** the page loads, **Then** I see a list of at least 20 sample users with realistic names and email addresses
 2. **Given** I navigate to `/app/demo/crud/transactions`, **When** the page loads, **Then** I see a list of sample transactions with fields like amount, date, status, and user references
 3. **Given** I navigate to `/app/demo/crud/goods`, **When** the page loads, **Then** I see a list of sample products/goods with fields like name, price, category, and stock quantity
-4. **Given** I am on any demo CRUD page, **When** I perform any CRUD operation (create, edit, delete), **Then** the operation succeeds and data persists within the demo session
+4. **Given** I am on any demo CRUD page, **When** I perform any CRUD operation (create, edit, delete), **Then** the operation succeeds and data persists across page reloads and server restarts
+5. **Given** I am on any demo CRUD page, **When** I click the "Reset Demo Data" button, **Then** the database is re-seeded with the original sample data
 
 ---
 
 ### Edge Cases
 
 - What happens when a table has no records (empty state messaging)?
-- How does the system handle very long text values in list view (truncation)?
 - What happens if the database connection fails during a CRUD operation (error handling)?
-- How are null values displayed in the list view and edit forms?
-- What happens when a user tries to edit a record that was deleted by another user (stale data)?
 - How does pagination behave when the total record count changes (e.g., after deletion)?
 - What happens when a table has many columns (horizontal scrolling or column selection)?
 - How are date/time values formatted in the list view for different timezones?
@@ -136,16 +143,21 @@ Developers and stakeholders can view working demo pages under `/app/demo/crud/` 
 - **FR-005**: System MUST provide a create form that uses the auto-generated schema to add new records to the database
 - **FR-006**: System MUST provide an edit form that pre-fills with existing record data and updates the database on save
 - **FR-007**: System MUST provide a delete function with confirmation dialog before removing records
-- **FR-008**: Users MUST be able to search/filter records in the list view by typing search terms
 - **FR-009**: System MUST display validation errors clearly when form submission fails (required fields, format errors, unique constraints)
 - **FR-010**: System MUST handle database errors gracefully with user-friendly error messages
 - **FR-011**: System MUST support pagination controls (first, previous, next, last, page size selection)
 - **FR-012**: System MUST provide demo pages under `/app/demo/crud/` for users, transactions, and goods tables
 - **FR-013**: Demo database MUST be pre-populated with realistic sample data (at least 20 records per table)
+- **FR-013a**: Demo database MUST use SQLite with better-sqlite3 for zero-setup, file-based persistence
+- **FR-013b**: Demo data MUST persist across server restarts and page reloads
+- **FR-013c**: System MUST provide a "Reset Demo Data" button to re-seed the database with original sample data
 - **FR-014**: System MUST format dates, times, and currency values appropriately in list views
+- **FR-014a**: System MUST truncate text values longer than 100 characters in list view with ellipsis (...)
 - **FR-015**: System MUST handle null values by showing empty states in list view and optional fields in forms
 - **FR-016**: System MUST prevent deletion of records with foreign key dependencies or show appropriate error message
 - **FR-017**: Edit forms MUST show current values when opened and indicate which fields have been modified
+- **FR-017a**: System MUST use last-write-wins strategy for concurrent edits (no version conflict detection)
+- **FR-017b**: System MUST show error message if attempting to edit or delete a record that no longer exists
 - **FR-018**: System MUST redirect to appropriate pages after successful CRUD operations (list view after create/edit/delete)
 - **FR-019**: All demo and test functionality MUST be located under `/app` directory, NOT `/src`
 - **FR-020**: System MUST support foreign key relationships by providing dropdown selects that load options from referenced tables
@@ -174,5 +186,4 @@ Developers and stakeholders can view working demo pages under `/app/demo/crud/` 
 - **SC-006**: Users can successfully complete all CRUD operations (Create, Read, Update, Delete) on all demo tables without errors in happy path scenarios
 - **SC-007**: Demo pages display meaningful error messages for all common error scenarios (validation failures, database errors, missing records)
 - **SC-008**: Pagination controls allow users to navigate through lists of 100+ records with page load times under 1 second per page
-- **SC-009**: Search/filter functionality returns relevant results within 500ms for datasets of 100+ records
-- **SC-010**: Auto-generated forms are visually consistent with existing Schema-Driven Form examples and follow the same layout patterns
+- **SC-009**: Auto-generated forms are visually consistent with existing Schema-Driven Form examples and follow the same layout patterns
