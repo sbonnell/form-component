@@ -1,17 +1,21 @@
 /**
  * DateTimeField component
  * 
- * Input field for date and time values (datetime-local)
- * Migrated to use shadcn/ui Input component.
+ * Input field for date and time values with calendar picker and time input
+ * Migrated to use shadcn/ui Calendar, Popover, and Input components.
  */
 
 'use client';
 
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useController } from 'react-hook-form';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
-import { Calendar } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarIcon, Clock } from 'lucide-react';
+import { format } from 'date-fns';
 import type { FieldDefinition } from '@/types/schema';
 import { cn } from '@/lib/utils';
 
@@ -30,10 +34,37 @@ export interface DateTimeFieldProps {
 }
 
 export default function DateTimeField({ name, field, required, disabled }: DateTimeFieldProps) {
-  const { register, formState: { errors } } = useFormContext();
+  const { control, formState: { errors } } = useFormContext();
   
   const error = errors[name]?.message as string | undefined;
-  const placeholder = field.ui?.placeholder || 'Select date and time';
+  const placeholder = field.ui?.placeholder || 'Pick a date and time';
+
+  const { field: controllerField } = useController({
+    name,
+    control,
+    rules: {
+      required: required ? `${field.title} is required` : false,
+    },
+  });
+
+  // Parse the datetime-local value (YYYY-MM-DDTHH:mm)
+  const dateValue = controllerField.value ? new Date(controllerField.value) : undefined;
+  const timeValue = controllerField.value ? controllerField.value.split('T')[1] || '00:00' : '00:00';
+
+  const handleDateSelect = (date: Date | undefined) => {
+    if (!date) {
+      controllerField.onChange('');
+      return;
+    }
+    const newValue = `${format(date, 'yyyy-MM-dd')}T${timeValue}`;
+    controllerField.onChange(newValue);
+  };
+
+  const handleTimeChange = (time: string) => {
+    if (!dateValue) return;
+    const newValue = `${format(dateValue, 'yyyy-MM-dd')}T${time}`;
+    controllerField.onChange(newValue);
+  };
 
   return (
     <FieldWrapper
@@ -45,23 +76,49 @@ export default function DateTimeField({ name, field, required, disabled }: DateT
       width={field.ui?.width}
       offset={field.ui?.offset}
     >
-      <div className="relative">
-        <Input
-          {...register(name)}
-          id={name}
-          type="datetime-local"
-          placeholder={placeholder}
-          disabled={disabled || field.readOnly}
-          className={cn(
-            error && 'border-destructive focus-visible:ring-destructive',
-            'pr-10'
-          )}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${name}-error` : undefined}
-        />
+      <div className="flex gap-2">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                'flex-1 justify-start text-left font-normal',
+                !controllerField.value && 'text-muted-foreground',
+                error && 'border-destructive'
+              )}
+              disabled={disabled || field.readOnly}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {controllerField.value ? (
+                format(new Date(controllerField.value), 'PPP')
+              ) : (
+                <span>{placeholder}</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={dateValue}
+              onSelect={handleDateSelect}
+              disabled={disabled || field.readOnly}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
         
-        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-          <Calendar className="h-4 w-4 text-muted-foreground" />
+        <div className="relative w-32">
+          <Input
+            type="time"
+            value={timeValue}
+            onChange={(e) => handleTimeChange(e.target.value)}
+            disabled={disabled || field.readOnly || !dateValue}
+            className={cn(
+              'pl-10',
+              error && 'border-destructive'
+            )}
+          />
+          <Clock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
         </div>
       </div>
       
