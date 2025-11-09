@@ -123,9 +123,13 @@ export default function SchemaEditor({
 
     const newHighlightedLines = new Set<number>();
 
+    // Handle nested field paths (e.g., "personalInfo.fullName")
+    const fieldParts = highlightedField.split('.');
+    const lastFieldName = fieldParts[fieldParts.length - 1];
+
     // Find the field definition in the schema
-    // Look for "fieldName": {
-    const fieldPattern = new RegExp(`"${highlightedField}"\\s*:\\s*{`, 'g');
+    // Look for "fieldName": { for the last part of the path
+    const fieldPattern = new RegExp(`"${lastFieldName}"\\s*:\\s*{`, 'g');
 
     let inFieldDefinition = false;
     let braceDepth = 0;

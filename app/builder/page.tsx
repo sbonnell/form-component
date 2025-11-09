@@ -215,6 +215,17 @@ function FormBuilderContent() {
         const fieldId = input.id || input.getAttribute('name');
         if (fieldId) {
           setHighlightedField(fieldId);
+          return;
+        }
+      }
+      
+      // Check if clicking within a field wrapper div (for nested fields)
+      const fieldWrapper = target.closest('[data-field-path]');
+      if (fieldWrapper) {
+        const fieldPath = fieldWrapper.getAttribute('data-field-path');
+        if (fieldPath) {
+          setHighlightedField(fieldPath);
+          return;
         }
       }
     };

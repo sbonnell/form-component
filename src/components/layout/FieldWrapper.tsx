@@ -81,7 +81,10 @@ export default function FieldWrapper({
   const combinedClasses = `${widthClass} ${offsetClass}`.trim();
 
   return (
-    <div className={`${combinedClasses} grid grid-rows-[auto_auto_1fr_auto] gap-y-0`}>
+    <div 
+      className={`${combinedClasses} grid grid-rows-[auto_auto_1fr_auto] gap-y-0`}
+      data-field-path={id}
+    >
       <label
         htmlFor={id}
         className="text-sm font-semibold text-gray-700 mb-1.5"
