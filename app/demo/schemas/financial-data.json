@@ -75,6 +75,9 @@
     "addressInfo": {
       "title": "Address Information",
       "type": "object",
+      "ui": {
+        "collapsed": true
+      },
       "properties": {
         "postcode": {
           "title": "Postcode",

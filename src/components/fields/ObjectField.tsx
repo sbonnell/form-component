@@ -53,7 +53,7 @@ export default function ObjectField({
   readOnlyFields = new Set()
 }: ObjectFieldProps) {
   const { formState: { errors } } = useFormContext();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(field.ui?.collapsed === true ? false : true);
   
   const error = errors[name]?.message as string | undefined;
   
@@ -89,7 +89,7 @@ export default function ObjectField({
             className="w-full justify-between rounded-none h-auto px-4 py-3"
           >
             <span className="text-sm font-medium">
-              {isExpanded ? 'Hide' : 'Show'} nested fields
+              {field.title}
             </span>
             
             {isExpanded ? (

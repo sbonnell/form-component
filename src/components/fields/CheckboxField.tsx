@@ -70,13 +70,16 @@ export default function CheckboxField({ name, field, required, disabled }: Check
   const offsetClass = offset ? offsetClasses[offset as keyof typeof offsetClasses] : '';
   const combinedClasses = `${widthClass} ${offsetClass}`.trim();
 
+  // Only add spacers when field is less than full width (likely beside another field)
+  const needsAlignment = width < 12;
+
   return (
     <div className={cn(combinedClasses, "grid grid-rows-[auto_auto_1fr_auto] gap-y-0")}>
-      {/* Empty label space to align with other fields */}
-      <div className="text-sm font-semibold mb-1.5 h-[1.25rem]" />
+      {/* Empty label space to align with other fields (only when beside other fields) */}
+      {needsAlignment && <div className="text-sm font-semibold mb-1.5 h-[1.25rem]" />}
 
-      {/* Empty description space to align with other fields */}
-      <div className="min-h-[20px] mb-2" />
+      {/* Empty description space to align with other fields (only when beside other fields) */}
+      {needsAlignment && <div className="min-h-[20px] mb-2" />}
 
       {/* Checkbox content aligned with input field position */}
       <div className={`flex items-center space-x-3 p-3 rounded-lg border ${error ? 'border-destructive bg-destructive/5' : 'border-border bg-muted/50'} transition-all duration-150 h-10`}>

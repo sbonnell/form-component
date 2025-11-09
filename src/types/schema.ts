@@ -150,6 +150,9 @@ export interface FieldUIConfiguration {
   /** Display order within section */
   order?: number;
   
+  /** Whether object/array field should be collapsed by default */
+  collapsed?: boolean;
+  
   /** Input mask pattern (for masked inputs) */
   mask?: string;
   
