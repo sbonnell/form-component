@@ -67,17 +67,17 @@ export default function FieldWrapper({
 
   // Map offset to responsive Tailwind grid column start classes
   const offsetClasses = {
-    1: '@md:col-start-2 @lg:col-start-2',
-    2: '@md:col-start-3 @lg:col-start-3',
-    3: '@md:col-start-4 @lg:col-start-4',
-    4: '@md:col-start-5 @lg:col-start-5',
-    5: '@md:col-start-6 @lg:col-start-6',
-    6: '@md:col-start-7 @lg:col-start-7',
-    7: '@md:col-start-8 @lg:col-start-8',
-    8: '@md:col-start-9 @lg:col-start-9',
-    9: '@md:col-start-10 @lg:col-start-10',
-    10: '@md:col-start-11 @lg:col-start-11',
-    11: '@md:col-start-12 @lg:col-start-12',
+    1: '@md:col-start-2 @lg:col-start-2 @xl:col-start-2',
+    2: '@md:col-start-3 @lg:col-start-3 @xl:col-start-3',
+    3: '@md:col-start-4 @lg:col-start-4 @xl:col-start-4',
+    4: '@md:col-start-5 @lg:col-start-5 @xl:col-start-5',
+    5: '@md:col-start-6 @lg:col-start-6 @xl:col-start-6',
+    6: '@md:col-start-7 @lg:col-start-7 @xl:col-start-7',
+    7: '@xl:col-start-8',
+    8: '@xl:col-start-9',
+    9: '@xl:col-start-10',
+    10: '@xl:col-start-11',
+    11: '@xl:col-start-12',
   };
 
   const widthClass = widthClasses[width];
