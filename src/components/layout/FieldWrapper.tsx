@@ -3,11 +3,15 @@
  * 
  * Common wrapper for all field components providing consistent layout,
  * label, help text, and error message display.
+ * Migrated to use shadcn/ui components.
  */
 
 'use client';
 
 import React from 'react';
+import { Label } from '@/components/ui/label';
+import { AlertCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface FieldWrapperProps {
   /** Field unique identifier */
@@ -82,52 +86,39 @@ export default function FieldWrapper({
 
   return (
     <div 
-      className={`${combinedClasses} grid grid-rows-[auto_auto_1fr_auto] gap-y-0`}
+      className={cn(combinedClasses, "grid grid-rows-[auto_auto_1fr_auto] gap-y-0")}
       data-field-path={id}
     >
-      <label
+      <Label
         htmlFor={id}
-        className="text-sm font-semibold text-gray-700 mb-1.5"
+        className="text-sm font-semibold mb-1.5"
       >
         {label}
         {required && (
-          <span className="text-red-500 ml-1 font-normal" aria-label="required">
+          <span className="text-destructive ml-1 font-normal" aria-label="required">
             *
           </span>
         )}
-      </label>
+      </Label>
 
-      {/* Description area - always present even if empty to maintain alignment */}
       <div className="min-h-[20px] mb-2">
         {description && (
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {description}
           </p>
         )}
       </div>
 
-      {/* Input field area */}
       <div>
         {children}
       </div>
 
-      {/* Error message area */}
       {error && (
         <p
-          className="mt-1.5 text-sm text-red-600 flex items-start"
+          className="mt-1.5 text-sm text-destructive flex items-start"
           role="alert"
         >
-          <svg
-            className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <AlertCircle className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" />
           <span>{error}</span>
         </p>
       )}

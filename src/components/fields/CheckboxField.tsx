@@ -2,12 +2,16 @@
  * CheckboxField component
  * 
  * Boolean checkbox field.
+ * Migrated to use shadcn/ui Checkbox component.
  */
 
 'use client';
 
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useController } from 'react-hook-form';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { AlertCircle } from 'lucide-react';
 import type { FieldDefinition } from '@/types/schema';
 
 export interface CheckboxFieldProps {
@@ -25,9 +29,11 @@ export interface CheckboxFieldProps {
 }
 
 export default function CheckboxField({ name, field, required, disabled }: CheckboxFieldProps) {
-  const { register, formState: { errors } } = useFormContext();
+  const { control, formState: { errors } } = useFormContext();
+  const { field: controllerField } = useController({ name, control });
   
   const error = errors[name]?.message as string | undefined;
+  
   const widthClasses = {
     1: 'col-span-1',
     2: 'col-span-1 @md:col-span-2',
@@ -64,35 +70,33 @@ export default function CheckboxField({ name, field, required, disabled }: Check
   const combinedClasses = `${widthClass} ${offsetClass}`.trim();
 
   return (
-    <div className={`${combinedClasses} flex items-start space-x-3 p-4 rounded-lg border ${error ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'} transition-all duration-150`}>
+    <div className={`${combinedClasses} flex items-start space-x-3 p-4 rounded-lg border ${error ? 'border-destructive bg-destructive/5' : 'border-border bg-muted/50'} transition-all duration-150`}>
       <div className="flex items-center h-6 mt-0.5">
-        <input
-          {...register(name)}
+        <Checkbox
           id={name}
-          type="checkbox"
+          checked={controllerField.value}
+          onCheckedChange={controllerField.onChange}
+          onBlur={controllerField.onBlur}
           disabled={disabled || field.readOnly}
-          className="h-5 w-5 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 border-gray-300 rounded cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-150"
           aria-invalid={!!error}
           aria-describedby={error ? `${name}-error` : undefined}
         />
       </div>
       <div className="flex-1 min-w-0">
-        <label htmlFor={name} className="text-sm font-semibold text-gray-700 cursor-pointer">
+        <Label htmlFor={name} className="text-sm font-semibold cursor-pointer">
           {field.title}
           {required && (
-            <span className="text-red-500 ml-1 font-normal" aria-label="required">
+            <span className="text-destructive ml-1 font-normal" aria-label="required">
               *
             </span>
           )}
-        </label>
+        </Label>
         {field.description && (
-          <p className="text-xs text-gray-600 mt-1 leading-relaxed">{field.description}</p>
+          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{field.description}</p>
         )}
         {error && (
-          <p className="text-sm text-red-600 mt-1.5 flex items-start" role="alert" id={`${name}-error`}>
-            <svg className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
+          <p className="text-sm text-destructive mt-1.5 flex items-start" role="alert" id={`${name}-error`}>
+            <AlertCircle className="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" />
             <span>{error}</span>
           </p>
         )}

@@ -2,6 +2,7 @@
  * CurrencyField component
  * 
  * Input field for currency values with formatting and validation
+ * Migrated to use shadcn/ui Input component.
  */
 
 'use client';
@@ -9,7 +10,9 @@
 import React, { useState, useEffect } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { Input } from '@/components/ui/input';
 import type { FieldDefinition } from '@/types/schema';
+import { cn } from '@/lib/utils';
 import {
   formatCurrencyInput,
   parseCurrency,
@@ -126,13 +129,13 @@ export default function CurrencyField({ name, field, required, disabled }: Curre
         {/* Currency symbol prefix (when not focused) */}
         {!isFocused && displayValue && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <span className="text-gray-500 text-sm font-medium">
+            <span className="text-muted-foreground text-sm font-medium">
               {symbol}
             </span>
           </div>
         )}
         
-        <input
+        <Input
           value={displayValue}
           onChange={handleChange}
           onFocus={handleFocus}
@@ -142,15 +145,10 @@ export default function CurrencyField({ name, field, required, disabled }: Curre
           inputMode="decimal"
           placeholder={placeholder}
           disabled={disabled || field.readOnly}
-          className={`w-full px-4 py-2.5 text-sm border rounded-lg shadow-sm transition-all duration-150 
-            ${!isFocused && displayValue ? 'pl-8' : ''}
-            ${error 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-            }
-            focus:outline-none focus:ring-2 focus:ring-offset-0
-            disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed
-            placeholder:text-gray-400`}
+          className={cn(
+            !isFocused && displayValue && 'pl-8',
+            error && 'border-destructive focus-visible:ring-destructive'
+          )}
           aria-invalid={!!error}
           aria-describedby={error ? `${name}-error` : undefined}
         />
@@ -160,10 +158,10 @@ export default function CurrencyField({ name, field, required, disabled }: Curre
       {!error && (field.ui?.help || field.minimum !== undefined || field.maximum !== undefined) && (
         <div className="mt-1.5 space-y-0.5">
           {field.ui?.help && (
-            <p className="text-xs text-gray-500">{field.ui.help}</p>
+            <p className="text-xs text-muted-foreground">{field.ui.help}</p>
           )}
           {(field.minimum !== undefined || field.maximum !== undefined) && (
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               {field.minimum !== undefined && field.maximum !== undefined
                 ? `Range: ${symbol}${field.minimum} - ${symbol}${field.maximum}`
                 : field.minimum !== undefined

@@ -2,6 +2,7 @@
  * ObjectField component
  * 
  * Nested object field group with collapsible UI
+ * Migrated to use shadcn/ui components.
  */
 
 'use client';
@@ -13,7 +14,11 @@ import TextField from './TextField';
 import NumberField from './NumberField';
 import CheckboxField from './CheckboxField';
 import SelectField from './SelectField';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import type { FieldDefinition } from '@/types/schema';
+import { cn } from '@/lib/utils';
 
 export interface ObjectFieldProps {
   /** Field path (dot-notation) */
@@ -75,36 +80,31 @@ export default function ObjectField({
       width={field.ui?.width}
       offset={field.ui?.offset}
     >
-      <div className="border border-gray-300 rounded-lg overflow-hidden">
-        {/* Collapsible header */}
-        <button
-          type="button"
-          onClick={toggleExpanded}
-          className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors duration-150"
-        >
-          <span className="text-sm font-medium text-gray-700">
-            {isExpanded ? 'Hide' : 'Show'} nested fields
-          </span>
-          
-          <svg
-            className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
-              isExpanded ? 'rotate-180' : ''
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+      <Card>
+        <CardHeader className="p-0">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={toggleExpanded}
+            className="w-full justify-between rounded-none h-auto px-4 py-3"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+            <span className="text-sm font-medium">
+              {isExpanded ? 'Hide' : 'Show'} nested fields
+            </span>
+            
+            {isExpanded ? (
+              <ChevronUp className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+            )}
+          </Button>
+        </CardHeader>
         
-        {/* Nested fields */}
         {isExpanded && (
-          <div className="p-4 space-y-4 bg-white">
+          <CardContent className="p-4 space-y-4">
             {Object.entries(properties).map(([key, nestedField]) => {
               const fieldPath = `${name}.${key}`;
               
-              // Skip hidden nested fields
               if (hiddenFields.has(fieldPath)) {
                 return null;
               }
@@ -164,13 +164,12 @@ export default function ObjectField({
                 </div>
               );
             })}
-          </div>
+          </CardContent>
         )}
-      </div>
+      </Card>
       
-      {/* Help text */}
       {!error && field.ui?.help && (
-        <p className="mt-2 text-xs text-gray-500">
+        <p className="mt-2 text-xs text-muted-foreground">
           {field.ui.help}
         </p>
       )}

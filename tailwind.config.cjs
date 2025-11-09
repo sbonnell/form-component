@@ -1,29 +1,75 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  content: [
+    darkMode: ['class'],
+    content: [
     './src/**/*.{js,ts,jsx,tsx}',
     './app/**/*.{js,ts,jsx,tsx}',
     './pages/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    extend: {
-      // Container query breakpoints optimized for form widths
-      containers: {
-        'xs': '256px',   // Mobile form
-        'sm': '384px',   // Small form
-        'md': '448px',   // Medium form (when form is ~50% viewport)
-        'lg': '576px',   // Large form (when form is ~75% viewport)
-        'xl': '672px',   // Extra large form (full width or wide container)
-        '2xl': '768px',  // 2XL form
-        '3xl': '896px',  // 3XL form
-        '4xl': '1024px', // 4XL form
-      },
-      // Smoother grid transitions between breakpoints
-      spacing: {
-        'gutter': '1.5rem', // Gap between fields
-      }
-    },
+  	extend: {
+  		containers: {
+  			xs: '256px',
+  			sm: '384px',
+  			md: '448px',
+  			lg: '576px',
+  			xl: '672px',
+  			'2xl': '768px',
+  			'3xl': '896px',
+  			'4xl': '1024px'
+  		},
+  		spacing: {
+  			gutter: '1.5rem'
+  		},
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		colors: {
+  			background: 'hsl(var(--background))',
+  			foreground: 'hsl(var(--foreground))',
+  			card: {
+  				DEFAULT: 'hsl(var(--card))',
+  				foreground: 'hsl(var(--card-foreground))'
+  			},
+  			popover: {
+  				DEFAULT: 'hsl(var(--popover))',
+  				foreground: 'hsl(var(--popover-foreground))'
+  			},
+  			primary: {
+  				DEFAULT: 'hsl(var(--primary))',
+  				foreground: 'hsl(var(--primary-foreground))'
+  			},
+  			secondary: {
+  				DEFAULT: 'hsl(var(--secondary))',
+  				foreground: 'hsl(var(--secondary-foreground))'
+  			},
+  			muted: {
+  				DEFAULT: 'hsl(var(--muted))',
+  				foreground: 'hsl(var(--muted-foreground))'
+  			},
+  			accent: {
+  				DEFAULT: 'hsl(var(--accent))',
+  				foreground: 'hsl(var(--accent-foreground))'
+  			},
+  			destructive: {
+  				DEFAULT: 'hsl(var(--destructive))',
+  				foreground: 'hsl(var(--destructive-foreground))'
+  			},
+  			border: 'hsl(var(--border))',
+  			input: 'hsl(var(--input))',
+  			ring: 'hsl(var(--ring))',
+  			chart: {
+  				'1': 'hsl(var(--chart-1))',
+  				'2': 'hsl(var(--chart-2))',
+  				'3': 'hsl(var(--chart-3))',
+  				'4': 'hsl(var(--chart-4))',
+  				'5': 'hsl(var(--chart-5))'
+  			}
+  		}
+  	}
   },
-  plugins: [require('@tailwindcss/container-queries')],
+  plugins: [require('@tailwindcss/container-queries'), require("tailwindcss-animate")],
 }

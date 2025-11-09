@@ -3,12 +3,17 @@
  * 
  * Step-by-step wizard navigation for multi-page forms.
  * Validates each step before allowing navigation to the next.
+ * Migrated to use shadcn/ui components.
  */
 
 'use client';
 
 import React, { useState } from 'react';
 import type { FieldErrors, FieldValues } from 'react-hook-form';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Check, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export interface WizardStep {
   /** Step identifier */
@@ -200,87 +205,57 @@ export default function WizardLayout({
                   )}
 
                   <div className="relative flex items-center group flex-shrink-0">
-                    {/* Step circle */}
                     <span
-                      className={`
-                        relative flex h-5 @xs:h-6 @md:h-8 w-5 @xs:w-6 @md:w-8 items-center justify-center rounded-full border-2 flex-shrink-0
-                        ${
-                          isActive
-                            ? hasErrors
-                              ? 'border-red-500 bg-white'
-                              : 'border-blue-600 bg-white'
-                            : isCompleted && !hasErrors
-                            ? 'border-blue-600 bg-blue-600'
-                            : hasErrors && isVisited
-                            ? 'border-red-500 bg-red-50'
-                            : hasErrors
-                            ? 'border-orange-400 bg-orange-50'
-                            : 'border-gray-300 bg-white'
-                        }
-                      `}
+                      className={cn(
+                        "relative flex h-5 @xs:h-6 @md:h-8 w-5 @xs:w-6 @md:w-8 items-center justify-center rounded-full border-2 flex-shrink-0",
+                        isActive && hasErrors && "border-destructive bg-background",
+                        isActive && !hasErrors && "border-primary bg-background",
+                        !isActive && isCompleted && !hasErrors && "border-primary bg-primary",
+                        !isActive && !isCompleted && hasErrors && isVisited && "border-destructive bg-destructive/10",
+                        !isActive && !isCompleted && hasErrors && !isVisited && "border-orange-400 bg-orange-50",
+                        !isActive && !isCompleted && !hasErrors && "border-border bg-background"
+                      )}
                     >
                       {isCompleted && !hasErrors ? (
-                        <svg
-                          className="h-3 @xs:h-3.5 @md:h-5 w-3 @xs:w-3.5 @md:w-5 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <Check className="h-3 @xs:h-3.5 @md:h-5 w-3 @xs:w-3.5 @md:w-5 text-primary-foreground" />
                       ) : hasErrors ? (
-                        <svg
-                          className={`h-3 @xs:h-3.5 @md:h-5 w-3 @xs:w-3.5 @md:w-5 ${isVisited ? 'text-red-500' : 'text-orange-500'}`}
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <X className={cn(
+                          "h-3 @xs:h-3.5 @md:h-5 w-3 @xs:w-3.5 @md:w-5",
+                          isVisited ? "text-destructive" : "text-orange-500"
+                        )} />
                       ) : (
                         <span
-                          className={`text-xs @xs:text-xs @md:text-sm font-medium flex-shrink-0 ${
-                            isActive ? 'text-blue-600' : 'text-gray-500'
-                          }`}
+                          className={cn(
+                            "text-xs @xs:text-xs @md:text-sm font-medium flex-shrink-0",
+                            isActive ? "text-primary" : "text-muted-foreground"
+                          )}
                         >
                           {index + 1}
                         </span>
                       )}
                     </span>
 
-                    {/* Step label - hidden on small screens */}
                     <span className="ml-0 @md:ml-1.5 @lg:ml-2.5 hidden @md:flex flex-col flex-shrink-0 max-w-12 @lg:max-w-none">
                       <span
-                        className={`block text-xs @md:text-xs @lg:text-sm font-medium truncate leading-tight ${
-                          isActive
-                            ? hasErrors
-                              ? 'text-red-600'
-                              : 'text-blue-600'
-                            : isCompleted && !hasErrors
-                            ? 'text-gray-900'
-                            : hasErrors && isVisited
-                            ? 'text-red-600'
-                            : hasErrors
-                            ? 'text-orange-600'
-                            : 'text-gray-500'
-                        }`}
+                        className={cn(
+                          "block text-xs @md:text-xs @lg:text-sm font-medium truncate leading-tight",
+                          isActive && hasErrors && "text-destructive",
+                          isActive && !hasErrors && "text-primary",
+                          !isActive && isCompleted && !hasErrors && "text-foreground",
+                          !isActive && hasErrors && isVisited && "text-destructive",
+                          !isActive && hasErrors && !isVisited && "text-orange-600",
+                          !isActive && !hasErrors && !isCompleted && "text-muted-foreground"
+                        )}
                       >
                         {step.title}
                       </span>
                       {step.description && (
-                        <span className={`hidden @md:block text-xs ${
-                          hasErrors && isVisited
-                            ? 'text-red-500'
-                            : hasErrors
-                            ? 'text-orange-500'
-                            : 'text-gray-500'
-                        } truncate leading-tight`}>
+                        <span className={cn(
+                          "hidden @md:block text-xs truncate leading-tight",
+                          hasErrors && isVisited && "text-destructive",
+                          hasErrors && !isVisited && "text-orange-500",
+                          !hasErrors && "text-muted-foreground"
+                        )}>
                           {step.description}
                         </span>
                       )}
@@ -294,64 +269,53 @@ export default function WizardLayout({
       </div>
 
       {/* Step Content */}
-      <div className="bg-white rounded-lg border border-gray-200 p-2 @sm:p-4 @md:p-6 mb-4 @md:mb-6">
-        <div className="mb-3 @md:mb-4 @lg:mb-6">
-          <h2 className="text-base @sm:text-lg @md:text-xl font-semibold text-gray-900">
+      <Card className="mb-4 @md:mb-6">
+        <CardHeader className="mb-3 @md:mb-4 @lg:mb-6">
+          <CardTitle className="text-base @sm:text-lg @md:text-xl">
             {currentStepData.title}
-          </h2>
+          </CardTitle>
           {currentStepData.description && (
-            <p className="text-xs @sm:text-sm text-gray-600 mt-1">
+            <CardDescription className="text-xs @sm:text-sm mt-1">
               {currentStepData.description}
-            </p>
+            </CardDescription>
           )}
-        </div>
+        </CardHeader>
 
-        <div>{currentStepData.content}</div>
-      </div>
+        <CardContent>{currentStepData.content}</CardContent>
+      </Card>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between gap-2 @sm:gap-4">
-        <button
+        <Button
           type="button"
+          variant="outline"
           onClick={handlePrevious}
           disabled={isFirstStep}
-          className={`
-            px-2 @sm:px-4 py-2 text-xs @sm:text-sm font-medium rounded-md transition-colors flex-1 @sm:flex-none
-            ${
-              isFirstStep
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-            }
-          `}
+          className="flex-1 @sm:flex-none"
         >
+          <ChevronLeft className="h-4 w-4 mr-1" />
           Previous
-        </button>
+        </Button>
 
         {isLastStep ? (
-          <button
+          <Button
             type="button"
             onClick={handleComplete}
             disabled={!allStepsValid}
-            className={`
-              px-2 @sm:px-4 py-2 text-xs @sm:text-sm font-medium rounded-md transition-colors flex-1 @sm:flex-none
-              ${
-                allStepsValid
-                  ? 'text-white bg-blue-600 hover:bg-blue-700'
-                  : 'text-gray-400 bg-gray-100 cursor-not-allowed'
-              }
-            `}
+            className="flex-1 @sm:flex-none"
             title={!allStepsValid ? 'Please complete all steps before submitting' : ''}
           >
             Complete
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
             onClick={handleNext}
-            className="px-2 @sm:px-4 py-2 text-xs @sm:text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors flex-1 @sm:flex-none"
+            className="flex-1 @sm:flex-none"
           >
             Next
-          </button>
+            <ChevronRight className="h-4 w-4 ml-1" />
+          </Button>
         )}
       </div>
     </div>

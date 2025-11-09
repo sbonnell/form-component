@@ -110,7 +110,7 @@ describe('Dynamic Options', () => {
 
   it('filters options with search query', async () => {
     const mockOnOptions: OnOptionsCallback = vi.fn()
-      .mockImplementation(async ({ searchQuery }) => {
+      .mockImplementation(async ({ searchQuery }: { searchQuery?: string }) => {
         const allOptions = [
           { value: 'uk', label: 'United Kingdom' },
           { value: 'us', label: 'United States' },
@@ -168,7 +168,7 @@ describe('Dynamic Options', () => {
 
   it('refreshes dependent field options when parent changes', async () => {
     const mockOnOptions: OnOptionsCallback = vi.fn()
-      .mockImplementation(async ({ sourceName, dependentValues }) => {
+      .mockImplementation(async ({ sourceName, dependentValues }: { sourceName?: string; dependentValues?: Record<string, unknown> }) => {
         if (sourceName === 'countries') {
           return {
             options: [
@@ -305,7 +305,7 @@ describe('Dynamic Options', () => {
   it('handles pagination with nextPageToken', async () => {
     let page = 1;
     const mockOnOptions = vi.fn<OnOptionsCallback>()
-      .mockImplementation(async ({ pageToken }) => {
+      .mockImplementation(async ({ pageToken }: { pageToken?: string }) => {
         const currentPage = pageToken ? parseInt(pageToken) : 1;
         
         return {

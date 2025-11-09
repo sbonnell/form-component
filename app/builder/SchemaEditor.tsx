@@ -204,6 +204,7 @@ export default function SchemaEditor({
         style={{
           fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
           userSelect: 'none',
+          whiteSpace: 'pre',
         }}
       >
         {Array.from({ length: lineCount }, (_, i) => {
@@ -218,6 +219,7 @@ export default function SchemaEditor({
                   ? 'text-blue-400 font-semibold bg-blue-900 bg-opacity-30 -mx-4 px-4'
                   : ''
               }`}
+              style={{ whiteSpace: 'pre' }}
             >
               {lineNumber}
             </div>
@@ -226,13 +228,14 @@ export default function SchemaEditor({
       </div>
 
       {/* Code Editor Container */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative overflow-hidden">
         {/* Highlighted Lines Background Overlay */}
         <div
           ref={highlightOverlayRef}
           className="absolute inset-0 pointer-events-none overflow-hidden font-mono text-sm leading-relaxed px-6 py-4"
           style={{
             fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+            whiteSpace: 'pre',
           }}
         >
           {lines.map((line, index) => {
@@ -245,6 +248,7 @@ export default function SchemaEditor({
                     ? 'bg-blue-900 bg-opacity-20 border-l-2 border-blue-500 -ml-6 pl-6'
                     : ''
                 }`}
+                style={{ whiteSpace: 'pre' }}
               >
                 {/* Use non-breaking space to maintain line height */}
                 {'\u00A0'}
@@ -265,8 +269,12 @@ export default function SchemaEditor({
             tabSize: 2,
             fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
             caretColor: 'white',
+            whiteSpace: 'pre',
+            overflowX: 'auto',
+            overflowY: 'auto',
           }}
           spellCheck={false}
+          wrap="off"
         />
       </div>
     </div>

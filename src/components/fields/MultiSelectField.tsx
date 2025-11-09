@@ -3,6 +3,7 @@
  * 
  * Multi-select dropdown field with search and dynamic options (US3).
  * Supports multiple selection with checkboxes and badge display.
+ * Migrated to use shadcn/ui Badge component for selected items.
  */
 
 'use client';
@@ -12,8 +13,14 @@ import { useFormContext as useRHFContext, useController } from 'react-hook-form'
 import { useFormContext } from '@/components/form-component/FormContext';
 import { useDynamicOptions } from '@/lib/options/fetcher';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ChevronDown, X } from 'lucide-react';
 import type { FieldDefinition } from '@/types/schema';
 import type { Option } from '@/lib/options/types';
+import { cn } from '@/lib/utils';
 
 export interface MultiSelectFieldProps {
   /** Field path (dot-notation) */
@@ -166,26 +173,26 @@ export default function MultiSelectField({ name, field, required, disabled }: Mu
     >
       <div ref={dropdownRef} className="relative">
         {/* Trigger button with selected badges */}
-        <button
+        <Button
           type="button"
+          variant="outline"
+          role="combobox"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           disabled={disabled || field.readOnly}
-          className={`w-full min-h-[42px] px-4 py-2 text-sm text-left border rounded-lg shadow-sm transition-all duration-150 bg-white flex items-center flex-wrap gap-1.5
-            ${error 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-            }
-            focus:outline-none focus:ring-2 focus:ring-offset-0
-            disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed`}
+          className={cn(
+            'w-full min-h-[42px] justify-between',
+            error && 'border-destructive'
+          )}
         >
-          {currentValue.length === 0 ? (
-            <span className="text-gray-400">{placeholder}</span>
-          ) : (
-            <>
-              {selectedLabels.map((label, index) => (
-                <span
+          <div className="flex items-center flex-wrap gap-1.5 flex-1">
+            {currentValue.length === 0 ? (
+              <span className="text-muted-foreground">{placeholder}</span>
+            ) : (
+              selectedLabels.map((label, index) => (
+                <Badge
                   key={index}
-                  className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
+                  variant="secondary"
+                  className="text-xs"
                 >
                   {label}
                   <button
@@ -195,40 +202,39 @@ export default function MultiSelectField({ name, field, required, disabled }: Mu
                       const valueToRemove = currentValue[index];
                       handleToggleOption(valueToRemove);
                     }}
-                    className="ml-1 hover:text-blue-900"
+                    className="ml-1 hover:opacity-70"
                   >
-                    ×
+                    <X className="h-3 w-3" />
                   </button>
-                </span>
-              ))}
-            </>
-          )}
-          <svg className="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+                </Badge>
+              ))
+            )}
+          </div>
+          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
         
         {/* Dropdown */}
         {isDropdownOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+          <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-md shadow-lg">
             {/* Search input and clear button */}
-            <div className="p-2 border-b border-gray-200 space-y-2">
-              <input
+            <div className="p-2 border-b border-border space-y-2">
+              <Input
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Search..."
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="h-9"
                 autoFocus
               />
               {currentValue.length > 0 && (
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
                   onClick={handleClearAll}
-                  className="w-full px-3 py-1.5 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                  className="w-full h-8 text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
                   Clear all ({currentValue.length})
-                </button>
+                </Button>
               )}
             </div>
             
@@ -238,26 +244,27 @@ export default function MultiSelectField({ name, field, required, disabled }: Mu
               onScroll={handleScroll}
             >
               {isLoading && (
-                <div className="p-4 text-center text-sm text-gray-500">
+                <div className="p-4 text-center text-sm text-muted-foreground">
                   Loading options...
                 </div>
               )}
               
               {fetchError && (
                 <div className="p-4">
-                  <p className="text-sm text-red-600 mb-2">Failed to load options</p>
-                  <button
+                  <p className="text-sm text-destructive mb-2">Failed to load options</p>
+                  <Button
                     type="button"
+                    variant="link"
                     onClick={() => refetch()}
-                    className="text-sm text-blue-600 hover:text-blue-700"
+                    className="h-auto p-0 text-sm"
                   >
                     Retry
-                  </button>
+                  </Button>
                 </div>
               )}
               
               {!isLoading && !fetchError && filteredOptions.length === 0 && (
-                <div className="p-4 text-center text-sm text-gray-500">
+                <div className="p-4 text-center text-sm text-muted-foreground">
                   No options found
                 </div>
               )}
@@ -268,18 +275,19 @@ export default function MultiSelectField({ name, field, required, disabled }: Mu
                 return (
                   <label
                     key={String(option.value)}
-                    className={`flex items-center w-full px-4 py-2 text-sm cursor-pointer hover:bg-gray-100
-                      ${option.disabled ? 'opacity-50 cursor-not-allowed' : ''}
-                      ${isSelected ? 'bg-blue-50' : ''}`}
+                    className={cn(
+                      'flex items-center w-full px-4 py-2 text-sm cursor-pointer hover:bg-accent',
+                      option.disabled && 'opacity-50 cursor-not-allowed',
+                      isSelected && 'bg-accent'
+                    )}
                   >
-                    <input
-                      type="checkbox"
+                    <Checkbox
                       checked={isSelected}
                       disabled={option.disabled}
-                      onChange={() => handleToggleOption(String(option.value))}
-                      className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      onCheckedChange={() => handleToggleOption(String(option.value))}
+                      className="mr-3"
                     />
-                    <span className={isSelected ? 'font-medium text-blue-700' : ''}>
+                    <span className={cn(isSelected && 'font-medium')}>
                       {option.label}
                     </span>
                   </label>

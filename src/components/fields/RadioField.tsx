@@ -2,15 +2,19 @@
  * RadioField component
  * 
  * Radio button group for single selection
+ * Migrated to use shadcn/ui RadioGroup component.
  */
 
 'use client';
 
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useController } from 'react-hook-form';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import type { FieldDefinition } from '@/types/schema';
 import type { Option } from '@/lib/options/types';
+import { cn } from '@/lib/utils';
 
 export interface RadioFieldProps {
   /** Field path (dot-notation) */
@@ -36,10 +40,10 @@ export default function RadioField({
   disabled, 
   layout = 'vertical' 
 }: RadioFieldProps) {
-  const { register, formState: { errors }, watch } = useFormContext();
+  const { control, formState: { errors } } = useFormContext();
+  const { field: controllerField } = useController({ name, control });
   
   const error = errors[name]?.message as string | undefined;
-  const currentValue = watch(name);
   
   // Get options from field schema
   const options: Option[] = field.enum?.map((value) => {
@@ -58,67 +62,43 @@ export default function RadioField({
       width={field.ui?.width}
       offset={field.ui?.offset}
     >
-      <div
-        className={`space-${layout === 'horizontal' ? 'x' : 'y'}-3 ${
-          layout === 'horizontal' ? 'flex flex-wrap' : ''
-        }`}
-        role="radiogroup"
-        aria-labelledby={`${name}-label`}
-        aria-required={required}
+      <RadioGroup
+        value={String(controllerField.value || '')}
+        onValueChange={controllerField.onChange}
+        onBlur={controllerField.onBlur}
+        disabled={disabled || field.readOnly}
+        className={cn(layout === 'horizontal' && 'flex flex-wrap gap-4')}
         aria-invalid={!!error}
+        aria-describedby={error ? `${name}-error` : undefined}
       >
         {options.map((option) => {
           const optionId = `${name}-${String(option.value)}`;
-          const isChecked = currentValue === option.value;
           const valueStr = String(option.value);
           
           return (
-            <label
-              key={valueStr}
-              htmlFor={optionId}
-              className={`relative flex items-start cursor-pointer group ${
-                layout === 'horizontal' ? 'mr-6' : ''
-              }`}
-            >
-              <div className="flex items-center h-5">
-                <input
-                  {...register(name)}
-                  id={optionId}
-                  type="radio"
-                  value={valueStr}
-                  disabled={disabled || field.readOnly}
-                  className={`w-4 h-4 border-2 transition-all duration-150 cursor-pointer
-                    ${error
-                      ? 'border-red-300 text-red-600 focus:ring-red-500'
-                      : 'border-gray-300 text-blue-600 focus:ring-blue-500'
-                    }
-                    focus:ring-2 focus:ring-offset-0
-                    disabled:bg-gray-50 disabled:cursor-not-allowed
-                    group-hover:border-blue-400`}
-                />
-              </div>
-              
-              <div className="ml-3">
-                <span
-                  className={`text-sm font-medium transition-colors duration-150
-                    ${disabled || field.readOnly
-                      ? 'text-gray-400'
-                      : isChecked
-                      ? 'text-gray-900'
-                      : 'text-gray-700 group-hover:text-gray-900'
-                    }`}
-                >
-                  {option.label}
-                </span>
-              </div>
-            </label>
+            <div key={valueStr} className="flex items-center space-x-2">
+              <RadioGroupItem
+                value={valueStr}
+                id={optionId}
+                disabled={disabled || field.readOnly}
+              />
+              <Label
+                htmlFor={optionId}
+                className={cn(
+                  'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer',
+                  (disabled || field.readOnly) && 'cursor-not-allowed opacity-70'
+                )}
+              >
+                {option.label}
+              </Label>
+            </div>
           );
         })}
-      </div>
+      </RadioGroup>
       
       {/* Help text */}
       {!error && field.ui?.help && (
-        <p className="mt-2 text-xs text-gray-500">
+        <p className="mt-2 text-xs text-muted-foreground">
           {field.ui.help}
         </p>
       )}

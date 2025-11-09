@@ -2,6 +2,7 @@
  * MaskedField component
  * 
  * Input field with format masking (IBAN, UK postcode, sort code, phone)
+ * Migrated to use shadcn/ui Input component.
  */
 
 'use client';
@@ -9,7 +10,10 @@
 import React, { useState, useEffect } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { Input } from '@/components/ui/input';
+import { Check } from 'lucide-react';
 import type { FieldDefinition } from '@/types/schema';
+import { cn } from '@/lib/utils';
 import { MASKS, applyMask, unmask, isCompleteMask, type MaskType } from '@/lib/formatting/masks';
 import {
   validateIBAN,
@@ -109,7 +113,7 @@ export default function MaskedField({ name, field, required, disabled, maskType 
       offset={field.ui?.offset}
     >
       <div className="relative">
-        <input
+        <Input
           value={displayValue}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -117,15 +121,10 @@ export default function MaskedField({ name, field, required, disabled, maskType 
           type="text"
           placeholder={placeholder}
           disabled={disabled || field.readOnly}
-          className={`w-full px-4 py-2.5 text-sm border rounded-lg shadow-sm transition-all duration-150 
-            ${error 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-            }
-            focus:outline-none focus:ring-2 focus:ring-offset-0
-            disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed
-            placeholder:text-gray-400
-            ${isComplete && !error ? 'pr-10' : ''}`}
+          className={cn(
+            error && 'border-destructive focus-visible:ring-destructive',
+            isComplete && !error && 'pr-10'
+          )}
           aria-invalid={!!error}
           aria-describedby={error ? `${name}-error` : undefined}
         />
@@ -133,26 +132,14 @@ export default function MaskedField({ name, field, required, disabled, maskType 
         {/* Completion indicator */}
         {isComplete && !error && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-            <svg
-              className="h-5 w-5 text-green-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+            <Check className="h-5 w-5 text-green-500" />
           </div>
         )}
       </div>
       
       {/* Format hint */}
       {!error && field.ui?.help && (
-        <p className="mt-1.5 text-xs text-gray-500">
+        <p className="mt-1.5 text-xs text-muted-foreground">
           {field.ui.help}
         </p>
       )}

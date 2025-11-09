@@ -3,6 +3,7 @@
  * 
  * Read-only field that displays a value computed from a formula.
  * The value is automatically updated by useCalculatedFields hook.
+ * Migrated to use shadcn/ui Input component with readonly styling.
  */
 
 'use client';
@@ -10,6 +11,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { Input } from '@/components/ui/input';
 import type { FieldDefinition } from '@/types/schema';
 
 export interface CalculatedFieldProps {
@@ -81,9 +83,12 @@ export function CalculatedField({
       width={field.ui?.width}
       offset={field.ui?.offset}
     >
-      <div className="mt-2 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 font-medium">
-        {displayValue}
-      </div>
+      <Input
+        value={displayValue}
+        readOnly
+        disabled
+        className="bg-muted text-foreground font-medium cursor-default"
+      />
       
       {/* Hidden input to maintain form state */}
       <input

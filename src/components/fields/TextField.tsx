@@ -2,6 +2,7 @@
  * TextField component
  * 
  * Basic text input field with validation support.
+ * Migrated to use shadcn/ui Input component.
  */
 
 'use client';
@@ -9,7 +10,9 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { Input } from '@/components/ui/input';
 import type { FieldDefinition } from '@/types/schema';
+import { cn } from '@/lib/utils';
 
 export interface TextFieldProps {
   /** Field path (dot-notation) */
@@ -41,20 +44,13 @@ export default function TextField({ name, field, required, disabled }: TextField
       width={field.ui?.width}
       offset={field.ui?.offset}
     >
-      <input
+      <Input
         {...register(name)}
         id={name}
         type="text"
         placeholder={placeholder}
         disabled={disabled || field.readOnly}
-        className={`w-full px-4 py-2.5 text-sm border rounded-lg shadow-sm transition-all duration-150 
-          ${error 
-            ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-          }
-          focus:outline-none focus:ring-2 focus:ring-offset-0
-          disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed
-          placeholder:text-gray-400`}
+        className={cn(error && 'border-destructive focus-visible:ring-destructive')}
         aria-invalid={!!error}
         aria-describedby={error ? `${name}-error` : undefined}
       />

@@ -3,17 +3,23 @@
  * 
  * Dropdown select field with static options (US1).
  * Enhanced with remote options, search, and dependencies (US3).
+ * Migrated to use shadcn/ui Select component for simple static selects.
  */
 
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { useFormContext as useRHFContext } from 'react-hook-form';
+import { useFormContext as useRHFContext, useController } from 'react-hook-form';
 import { useFormContext } from '@/components/form-component/FormContext';
 import { useDynamicOptions } from '@/lib/options/fetcher';
 import FieldWrapper from '@/components/layout/FieldWrapper';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { ChevronDown } from 'lucide-react';
 import type { FieldDefinition } from '@/types/schema';
 import type { Option } from '@/lib/options/types';
+import { cn } from '@/lib/utils';
 
 export interface SelectFieldProps {
   /** Field path (dot-notation) */
@@ -30,7 +36,8 @@ export interface SelectFieldProps {
 }
 
 export default function SelectField({ name, field, required, disabled }: SelectFieldProps) {
-  const { register, formState: { errors }, watch } = useRHFContext();
+  const { register, formState: { errors }, watch, control } = useRHFContext();
+  const { field: controllerField } = useController({ name, control });
   const formContext = useFormContext();
   
   const error = errors[name]?.message as string | undefined;
@@ -133,7 +140,7 @@ export default function SelectField({ name, field, required, disabled }: SelectF
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(dependentValues)]);
   
-  // For simple static selects without search, use native select
+  // For simple static selects without search, use shadcn Select
   if (!hasSearch) {
     return (
       <FieldWrapper
@@ -145,27 +152,31 @@ export default function SelectField({ name, field, required, disabled }: SelectF
         width={field.ui?.width}
         offset={field.ui?.offset}
       >
-        <select
-          {...register(name)}
-          id={name}
+        <Select
+          value={String(controllerField.value || '')}
+          onValueChange={controllerField.onChange}
           disabled={disabled || field.readOnly}
-          className={`w-full px-4 py-2.5 text-sm border rounded-lg shadow-sm transition-all duration-150 bg-white
-            ${error 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-            }
-            focus:outline-none focus:ring-2 focus:ring-offset-0
-            disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed`}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${name}-error` : undefined}
         >
-          <option value="">{placeholder}</option>
-          {filteredOptions.map((option) => (
-            <option key={String(option.value)} value={String(option.value)} disabled={option.disabled}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger
+            id={name}
+            className={cn(error && 'border-destructive focus:ring-destructive')}
+            aria-invalid={!!error}
+            aria-describedby={error ? `${name}-error` : undefined}
+          >
+            <SelectValue placeholder={placeholder} />
+          </SelectTrigger>
+          <SelectContent>
+            {filteredOptions.map((option) => (
+              <SelectItem 
+                key={String(option.value)} 
+                value={String(option.value)} 
+                disabled={option.disabled}
+              >
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </FieldWrapper>
     );
   }
@@ -186,35 +197,33 @@ export default function SelectField({ name, field, required, disabled }: SelectF
         <input type="hidden" {...register(name)} />
         
         {/* Trigger button */}
-        <button
+        <Button
           type="button"
+          variant="outline"
+          role="combobox"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           disabled={disabled || field.readOnly}
-          className={`w-full px-4 py-2.5 text-sm text-left border rounded-lg shadow-sm transition-all duration-150 bg-white flex items-center justify-between
-            ${error 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-            }
-            focus:outline-none focus:ring-2 focus:ring-offset-0
-            disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed`}
+          className={cn(
+            'w-full justify-between',
+            !currentValue && 'text-muted-foreground',
+            error && 'border-destructive'
+          )}
         >
-          <span className={currentValue ? '' : 'text-gray-400'}>{selectedLabel}</span>
-          <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+          <span>{selectedLabel}</span>
+          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
         
         {/* Dropdown */}
         {isDropdownOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+          <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-md shadow-lg">
             {/* Search input */}
-            <div className="p-2 border-b border-gray-200">
-              <input
+            <div className="p-2 border-b border-border">
+              <Input
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Search..."
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="h-9"
                 autoFocus
               />
             </div>
@@ -225,51 +234,52 @@ export default function SelectField({ name, field, required, disabled }: SelectF
               onScroll={handleScroll}
             >
               {isLoading && (
-                <div className="p-4 text-center text-sm text-gray-500">
+                <div className="p-4 text-center text-sm text-muted-foreground">
                   Loading options...
                 </div>
               )}
               
               {fetchError && (
                 <div className="p-4">
-                  <p className="text-sm text-red-600 mb-2">Failed to load options</p>
-                  <button
+                  <p className="text-sm text-destructive mb-2">Failed to load options</p>
+                  <Button
                     type="button"
+                    variant="link"
                     onClick={() => refetch()}
-                    className="text-sm text-blue-600 hover:text-blue-700"
+                    className="h-auto p-0 text-sm"
                   >
                     Retry
-                  </button>
+                  </Button>
                 </div>
               )}
               
               {!isLoading && !fetchError && filteredOptions.length === 0 && (
-                <div className="p-4 text-center text-sm text-gray-500">
+                <div className="p-4 text-center text-sm text-muted-foreground">
                   No options found
                 </div>
               )}
               
               {filteredOptions.map((option) => (
-                <button
+                <Button
                   key={String(option.value)}
                   type="button"
+                  variant="ghost"
                   disabled={option.disabled}
                   onClick={() => {
-                    const event = {
-                      target: { name, value: option.value },
-                    };
-                    register(name).onChange(event);
+                    controllerField.onChange(option.value);
                     setIsDropdownOpen(false);
                   }}
-                  className={`w-full px-4 py-2 text-sm text-left hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed
-                    ${String(option.value) === String(currentValue) ? 'bg-blue-50 text-blue-700' : ''}`}
+                  className={cn(
+                    'w-full justify-start font-normal',
+                    String(option.value) === String(currentValue) && 'bg-accent'
+                  )}
                 >
                   {option.label}
-                </button>
+                </Button>
               ))}
               
               {isFetchingNextPage && (
-                <div className="p-2 text-center text-sm text-gray-500">
+                <div className="p-2 text-center text-sm text-muted-foreground">
                   Loading more...
                 </div>
               )}
