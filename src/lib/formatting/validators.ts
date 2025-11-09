@@ -101,9 +101,6 @@ export function validateUKPostcode(value: string): { valid: boolean; error?: str
     return { valid: true };
   }
   
-  // Remove spaces and convert to uppercase
-  const cleaned = value.replace(/\s/g, '').toUpperCase();
-  
   // UK postcode patterns:
   // A9 9AA, A99 9AA, AA9 9AA, AA99 9AA, A9A 9AA, AA9A 9AA
   const postcodeRegex = /^([A-Z]{1,2}[0-9]{1,2}[A-Z]?)\s*([0-9][A-Z]{2})$/;

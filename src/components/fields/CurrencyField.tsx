@@ -99,7 +99,7 @@ export default function CurrencyField({ name, field, required, disabled }: Curre
       setDisplayValue(formatCurrencyInput(numValue.toString(), options));
       
       // Validate currency constraints
-      const validation = validateCurrency(numValue, {
+      validateCurrency(numValue, {
         ...options,
         min: field.minimum,
         max: field.maximum,

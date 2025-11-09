@@ -63,9 +63,6 @@ export default function TabForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadedData, setLoadedData] = useState<Record<string, any> | undefined>(initialData);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Parse schema once
-  const parsedSchema = React.useMemo(() => parseSchema(schema), [schema]);
   
   // Use loaded data or provided initialData
   const formInitialData = loadedData || initialData;
@@ -81,7 +78,7 @@ export default function TabForm({
   const { requiredFields } = useValidation({ schema, form });
   
   // Setup conditional logic
-  const { hiddenFields, conditionallyRequiredFields, readOnlyFields } = useConditionalLogic({
+  const { readOnlyFields } = useConditionalLogic({
     properties: schema.properties,
     control: form.control,
     baseRequiredFields: schema.required,

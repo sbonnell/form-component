@@ -75,20 +75,18 @@ export default function MaskedField({ name, field, required, disabled, maskType 
     // Validate format on blur
     const rawValue = controllerField.value || '';
     if (rawValue) {
-      let validation: { valid: boolean; error?: string } = { valid: true };
-      
       switch (maskType) {
         case 'iban':
-          validation = validateIBAN(rawValue);
+          validateIBAN(rawValue);
           break;
         case 'ukPostcode':
-          validation = validateUKPostcode(rawValue);
+          validateUKPostcode(rawValue);
           break;
         case 'ukSortCode':
-          validation = validateUKSortCode(rawValue);
+          validateUKSortCode(rawValue);
           break;
         case 'phoneE164':
-          validation = validateE164Phone(rawValue);
+          validateE164Phone(rawValue);
           break;
       }
       

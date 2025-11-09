@@ -44,7 +44,6 @@ interface UseConditionalLogicParams {
 export function useConditionalLogic({
   properties,
   control,
-  baseRequiredFields = [],
   allFields,
 }: UseConditionalLogicParams): ConditionalLogicResult {
   // Watch all form values for conditional evaluation

@@ -175,7 +175,6 @@ export default function WizardLayout({
               const isVisited = visitedSteps.has(index);
               const isCompleted = index < currentStep;
               const hasErrors = hasStepErrors(step);
-              const complete = isStepComplete(step);
 
               return (
                 <li

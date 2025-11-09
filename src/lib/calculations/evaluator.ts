@@ -5,8 +5,6 @@
  * Supports basic arithmetic, field references, and common functions.
  */
 
-import type { CalculatedField } from '@/types/schema';
-
 /**
  * Evaluate a calculated field formula
  * 

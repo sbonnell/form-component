@@ -39,7 +39,6 @@ export function CalculatedField({
   name,
   field,
   required = false,
-  disabled = false,
   decimalPlaces,
   prefix,
   suffix,
