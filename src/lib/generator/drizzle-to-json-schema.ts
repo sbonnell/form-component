@@ -3,17 +3,6 @@
  */
 
 import type { FormSchema } from "@/types/schema";
-import type { SQLiteTableWithColumns } from "drizzle-orm/sqlite-core";
-
-interface DrizzleColumn {
-  name: string;
-  notNull: boolean;
-  primary?: boolean;
-  default?: any;
-  enumValues?: string[];
-  dataType?: string;
-  columnType?: string;
-}
 
 /**
  * Get JSON Schema type from Drizzle column
@@ -103,7 +92,7 @@ export function drizzleTableToFormSchema(
   // Access the table columns
   const columns = table ? Object.entries(table) : [];
   
-  for (const [propName, column] of columns) {
+  for (const [, column] of columns) {
     const col = column as any;
     
     // Skip if not a column definition

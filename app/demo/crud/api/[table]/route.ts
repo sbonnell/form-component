@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { initializeDB, resetDatabase } from "../../lib/db/init";
+import { initializeDB } from "../../lib/db/init";
 import { listRows, insertRow, updateRow, deleteRow, selectOne } from "../../lib/db/crud";
 import type { ListOptions } from "../../lib/db/crud";
 

@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 /**
  * Generic list configuration for a table
  */
@@ -57,7 +55,7 @@ function formatValue(value: any, column: ColumnConfig): string {
     case "enum":
     case "text":
     default: {
-      let text = String(value);
+      const text = String(value);
       
       // Apply truncation if specified
       if (column.truncate && text.length > column.truncate) {

@@ -1,4 +1,4 @@
-import { getDatabase, saveDatabase, getSqlDb, runSql } from "./client";
+import { saveDatabase, getSqlDb } from "./client";
 import { seedDatabase } from "./seed";
 
 /**

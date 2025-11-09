@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { resetDatabase } from "../../lib/db/init";
 
 export const dynamic = "force-dynamic";
