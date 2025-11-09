@@ -4,8 +4,6 @@
  * Navigation to all example forms.
  */
 
-import Link from 'next/link';
-
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -24,17 +22,54 @@ export default function HomePage() {
           <p className="text-blue-800 mb-4">
             Interactive tool to test forms with live schema editing, responsive design testing with resizable panels, and form component selection.
           </p>
-          <Link
+          <a
             href="/builder"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             Open Form Builder →
-          </Link>
+          </a>
+        </div>
+
+        <div className="mb-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg">
+          <h2 className="text-lg font-bold text-green-900 mb-2">💾 CRUD Demo</h2>
+          <p className="text-green-800 mb-4">
+            Full-stack CRUD operations with SQLite database, Drizzle ORM, and schema-driven forms. Create, read, update, and delete records across three tables.
+          </p>
+          <div className="flex gap-3 flex-wrap">
+            <a
+              href="/demo/crud/users"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            >
+              Users →
+            </a>
+            <a
+              href="/demo/crud/transactions"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            >
+              Transactions →
+            </a>
+            <a
+              href="/demo/crud/goods"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            >
+              Goods →
+            </a>
+          </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          <Link
+          <a
             href="/examples/basic"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -45,10 +80,12 @@ export default function HomePage() {
               Demonstrates validation and submission.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
           
-          <Link
+          <a
             href="/examples/edit"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -59,10 +96,12 @@ export default function HomePage() {
               Demonstrates onLoad callback and dirty field detection.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
           
-          <Link
+          <a
             href="/examples/dynamic"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -73,10 +112,12 @@ export default function HomePage() {
               Demonstrates onOptions callback and TanStack Query caching.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
           
-          <Link
+          <a
             href="/examples/conditional"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -87,10 +128,12 @@ export default function HomePage() {
               Demonstrates hiddenWhen, requiredWhen, and formula evaluation.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
           
-          <Link
+          <a
             href="/examples/file-upload"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -101,10 +144,12 @@ export default function HomePage() {
               Demonstrates onUpload callback and client-side file validation.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
           
-          <Link
+          <a
             href="/examples/wizard"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -115,10 +160,12 @@ export default function HomePage() {
               Demonstrates wizard layout for complex multi-page forms.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
 
-          <Link
+          <a
             href="/examples/tabs"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -129,10 +176,12 @@ export default function HomePage() {
               Demonstrates tabbed layout for organized multi-section forms.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
 
-          <Link
+          <a
             href="/examples/financial-data"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block p-6 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
@@ -143,7 +192,7 @@ export default function HomePage() {
               Demonstrates automatic input formatting and validation.
             </p>
             <p className="text-sm text-blue-600 mt-4">View Example →</p>
-          </Link>
+          </a>
         </div>
       </div>
     </div>

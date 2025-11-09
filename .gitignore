@@ -62,3 +62,8 @@ logs/
 # temporary files
 *.tmp
 .cache/
+
+# Demo database files (Drizzle CRUD feature)
+app/demo/crud/demo.db
+app/demo/crud/demo.db-shm
+app/demo/crud/demo.db-wal
