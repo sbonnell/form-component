@@ -36,7 +36,7 @@ git clone https://github.com/sbonnell/form-component.git
 cd form-component
 
 # Install dependencies
-npm install
+npm install --legacy-peer-deps
 
 # Run development server
 npm run dev
